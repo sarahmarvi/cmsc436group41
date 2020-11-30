@@ -2,6 +2,6 @@
 
 Sarah Marvi
 
-Kashif Peshimam, Group 41, Audio Dictionary
+Kashif Peshimam (with computer username "Family")
 
 Joshua Blume
