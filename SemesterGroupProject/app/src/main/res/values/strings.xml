@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Audio Dictionary</string>
+
+<!--    Strings for welcome.xml-->
+    <string name="welcome_french">Bonjour!</string>
+    <string name="welcome_spanish">Hola!</string>
+    <string name="welcome_english">Hello, and welcome to the Audio Dictionary</string>
+    <string name="welcome_question">Who are you?</string>
+    <string name="welcome_learner">\u0020\u0020Learner\u0020\u0020</string>
+    <string name="welcome_Native">\u0020\u0020\u0020Native\u0020\u0020\u0020</string>
+
+<!--    Strings for languages.xml-->
+    <string name="languages_title">Languages</string>
+    <string name="languages_arabic">Arabic</string>
+    <string name="languages_french">French</string>
+    <string name="languages_italian">Italian</string>
+    <string name="languages_spanish">Spanish</string>
+    <string name="languages_open">Open</string>
+
+<!--    Strings for login.xml-->
+    <string name="login_title">Login</string>
+    <string name="login_user">Username</string>
+    <string name="login_pass">Password</string>
+    <string name="login_submit">Submit</string>
+    <string name="login_question">Need to create an account?</string>
+    <string name="login_create">\u0020\u0020Create Account\u0020\u0020</string>
+
+<!--    Strings for create_account.xml-->
+    <string name="create_title">Create Account</string>
+    <string name="create_email">Email</string>
+    <string name="create_user">Username</string>
+    <string name="create_pass">Password</string>
+    <string name="create_create">Create</string>
+
+
+
+</resources>
