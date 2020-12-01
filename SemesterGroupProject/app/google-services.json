@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "531631474342",
+    "firebase_url": "https://audiolistener-70fe7.firebaseio.com",
+    "project_id": "audiolistener-70fe7",
+    "storage_bucket": "audiolistener-70fe7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531631474342:android:0c2c63dc34ffaf83abd667",
+        "android_client_info": {
+          "package_name": "com.example.audiodictionary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531631474342-fadte8pdt6cp0pq5rkm2tmve453f09ec.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.audiodictionary",
+            "certificate_hash": "cf366ef1e51ed62d2d6fafa38f90cb71bc5a2ed3"
+          }
+        },
+        {
+          "client_id": "531631474342-5dnqvk7nflodlv3dn31tuispvedqkm0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrtyt0AljmCEE93F8KCKsRUBmGIVSGhKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "531631474342-5dnqvk7nflodlv3dn31tuispvedqkm0t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -26,12 +26,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startLearner() {
-        val intent = Intent(this, LanguageListActivity::class.java)
+        val intent = Intent(this@MainActivity, LanguageListActivity::class.java)
         startActivity(intent)
     }
 
     private fun startNative() {
-        val intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this@MainActivity, LoginActivity::class.java)
         startActivity(intent)
     }
 }
