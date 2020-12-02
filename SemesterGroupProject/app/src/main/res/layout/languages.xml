@@ -109,7 +109,7 @@
         app:layout_constraintVertical_bias="0.242" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/arabic_open"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#037BB1"
@@ -137,7 +137,7 @@
         app:layout_constraintVertical_bias="0.259" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/french_open"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#037BB1"
@@ -151,7 +151,7 @@
         app:layout_constraintVertical_bias="0.44" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/italian_open"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#037BB1"
@@ -165,7 +165,7 @@
         app:layout_constraintVertical_bias="0.616" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/spanish_open"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#037BB1"

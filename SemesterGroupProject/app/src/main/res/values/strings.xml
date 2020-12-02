@@ -32,6 +32,8 @@
     <string name="create_pass">Password</string>
     <string name="create_create">Create</string>
 
-
+<!--    Strings for native_language-->
+    <string name="native_language_eng">English</string>
+    <string name="native_language_add_btn">Add</string>
 
 </resources>

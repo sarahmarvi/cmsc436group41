@@ -76,6 +76,7 @@ class LoginActivity : AppCompatActivity() {
                     var intent = Intent(this@LoginActivity, LanguageListActivity::class.java)
 //                    var uid = mAuth!!.currentUser?.uid
 //                    intent.putExtra("UserID", uid)
+                    intent.putExtra("theUser", email)
                     startActivity(intent)
                 } else {
                     Toast.makeText(
