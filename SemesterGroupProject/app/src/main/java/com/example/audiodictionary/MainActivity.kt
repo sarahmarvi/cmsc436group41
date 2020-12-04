@@ -3,6 +3,8 @@ package com.example.audiodictionary
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
@@ -25,9 +27,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        val intent = Intent(this@MainActivity, MainActivity::class.java)
+//        startActivity(intent)
+        return true
+    }
+
     private fun startLearner() {
         val intent = Intent(this@MainActivity, LanguageListActivity::class.java)
-        intent.putExtra("theUser", "learner")
+        intent.putExtra("theUser", "Learner")
         startActivity(intent)
     }
 
