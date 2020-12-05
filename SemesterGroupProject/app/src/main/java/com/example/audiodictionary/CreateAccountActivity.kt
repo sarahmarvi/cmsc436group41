@@ -25,24 +25,19 @@ class CreateAccountActivity : AppCompatActivity() {
     private var validator = Validators()
 
     private var mAuth: FirebaseAuth? = null
+    private lateinit var databaseUser : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i("CreateAccountActivity", "In onCreate of CreateAccountActivity")
         super.onCreate(savedInstanceState)
-        Log.i("CreateAccountActivity", "Stop 0")
         setContentView(R.layout.create_account)
 
         mAuth = FirebaseAuth.getInstance()
+        databaseUser = FirebaseDatabase.getInstance().getReference("User")
 
-        Log.i("CreateAccountActivity", "Stop 1")
         emailTV = findViewById(R.id.editTextTextEmailAddress)
-        Log.i("CreateAccountActivity", "Stop 2")
         passwordTV = findViewById(R.id.editTextTextPassword)
-        Log.i("CreateAccountActivity", "Stop 3")
         usernameTV = findViewById(R.id.editTextUsername)
-        Log.i("CreateAccountActivity", "Stop 4")
         regBtn = findViewById(R.id.createAccBtn)
-        Log.i("CreateAccountActivity", "Stop 5")
         regBtn!!.setOnClickListener { registerNewUser() }
     }
 
@@ -61,12 +56,21 @@ class CreateAccountActivity : AppCompatActivity() {
             return
         }
 
+        if (TextUtils.isEmpty(username)) {
+            Toast.makeText(applicationContext, "Please enter a username!", Toast.LENGTH_LONG).show()
+            return
+        }
+
         mAuth!!.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
 
+                    addUser(task.result!!.user!!.uid, username)
+
                     val intent = Intent(this@CreateAccountActivity, LoginActivity::class.java)
+
+                    Log.i("CreateAccountActivity", "Sending Intent to LoginActivity")
                     startActivity(intent)
                 } else {
                     Toast.makeText(applicationContext, "Registration failed! Please try again later", Toast.LENGTH_LONG).show()
@@ -85,5 +89,21 @@ class CreateAccountActivity : AppCompatActivity() {
         return true
     }
 
+    // Adds user + Settings to database
+    private fun addUser (uid : String, username : String) {
+
+        if (!TextUtils.isEmpty(username)) {
+
+            // Creating User Object
+            val user = User(username, "")
+
+            // Saving the User
+            databaseUser.child(uid).setValue(user)
+
+            Log.i("CreateAccountActivity", "Added username to database")
+
+        }
+
+    }
 
 }
