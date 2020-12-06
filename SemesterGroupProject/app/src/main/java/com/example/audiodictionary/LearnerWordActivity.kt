@@ -27,7 +27,7 @@ class LearnerWordActivity : AppCompatActivity() {
 
     private lateinit var recordings : MutableList<Recording>
     private lateinit var recordingIds : MutableList<String>
-    private lateinit var ratings : MutableList<Ratings>
+    private lateinit var ratings : MutableList<Rating>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
