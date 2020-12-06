@@ -46,6 +46,9 @@ class CreateAudio : AppCompatActivity() {
         playRecordingBtn = findViewById(R.id.button4)
         submitBtn = findViewById(R.id.button5)
 
+        audioFilePath = Environment.getExternalStorageDirectory()
+            .absolutePath + "/myaudio.3gp"
+
         submitBtn.setOnClickListener { upload() }
     }
 
