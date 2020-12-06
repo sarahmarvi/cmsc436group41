@@ -30,6 +30,22 @@
             android:name="com.example.audiodictionary.CreateAccountActivity"
             android:label="AudioDictionary" >
         </activity>
+        <activity
+            android:name="com.example.audiodictionary.LearnerLanguage"
+            android:label="AudioDictionary" >
+        </activity>
+        <activity
+            android:name="com.example.audiodictionary.NativeLanguage"
+            android:label="AudioDictionary" >
+        </activity>
+        <activity
+            android:name="com.example.audiodictionary.CreateAudio"
+            android:label="AudioDictionary" >
+        </activity>
+        <activity
+            android:name="com.example.audiodictionary.WidgetTestActivity"
+            android:label="WidgetTestActivity" >
+        </activity>
     </application>
 
 </manifest>

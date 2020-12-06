@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun startLearner() {
         val intent = Intent(this@MainActivity, LanguageListActivity::class.java)
+        //val intent = Intent(this@MainActivity, WidgetTestActivity::class.java)
+        intent.putExtra("theUser", "Learner")
         startActivity(intent)
     }
 
