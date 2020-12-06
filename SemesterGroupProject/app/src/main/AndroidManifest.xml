@@ -3,6 +3,8 @@
     package="com.example.audiodictionary">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -28,6 +30,18 @@
         </activity>
         <activity
             android:name="com.example.audiodictionary.CreateAccountActivity"
+            android:label="AudioDictionary" >
+        </activity>
+        <activity
+            android:name="com.example.audiodictionary.LearnerLanguage"
+            android:label="AudioDictionary" >
+        </activity>
+        <activity
+            android:name="com.example.audiodictionary.NativeLanguage"
+            android:label="AudioDictionary" >
+        </activity>
+        <activity
+            android:name="com.example.audiodictionary.CreateAudio"
             android:label="AudioDictionary" >
         </activity>
     </application>

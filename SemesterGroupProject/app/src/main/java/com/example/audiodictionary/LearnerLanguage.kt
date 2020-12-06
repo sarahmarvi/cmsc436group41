@@ -25,10 +25,8 @@ class LearnerLanguage : AppCompatActivity() {
 
         words = ArrayList()
 
-        databaseLanguage =  FirebaseDatabase.getInstance().getReference("titles").child(
-            intent.getStringExtra("LANGUAGE").toString())
-
-        databaseWords = databaseLanguage.child("words")
+        databaseWords =  FirebaseDatabase.getInstance().getReference("Languages").child(
+            intent.getStringExtra("LANGUAGE").toString()).child("words")
 
     }
 
@@ -71,6 +69,4 @@ class LearnerLanguage : AppCompatActivity() {
             }
         })
     }
-
-
 }

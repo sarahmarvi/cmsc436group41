@@ -13,8 +13,9 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
+import java.lang.Exception
+import java.lang.annotation.Native
 
 class LoginActivity : AppCompatActivity() {
 
@@ -75,9 +76,9 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG)
                         .show()
 
-                    var intent = Intent(this@LoginActivity, LanguageListActivity::class.java)
-                    intent.putExtra("UserID", task.result!!.user!!.uid)
-
+                    var intent = Intent(this@LoginActivity, NativeLanguage::class.java)
+                    intent.putExtra("theUser", email)
+                    intent.putExtra("LANGUAGE", "fr")
                     startActivity(intent)
                 } else {
                     Toast.makeText(

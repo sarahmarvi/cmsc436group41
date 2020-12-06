@@ -32,13 +32,18 @@ class NativeLanguage : AppCompatActivity() {
 
         words = ArrayList()
 
-        databaseLanguage =  FirebaseDatabase.getInstance().getReference("titles").child(
-            intent.getStringExtra("LANGUAGE").toString())
+        Log.d("NativeLanguage", "In onCreate")
 
-        databaseWords = databaseLanguage.child("words")
+        databaseWords =  FirebaseDatabase.getInstance().getReference("Languages").child(
+            intent.getStringExtra("LANGUAGE").toString()).child("words")
+
+        Log.d("NativeLanguage", "After querying database")
+
+//        databaseWords = databaseLanguage.child("words")
 
         englishTranslationTV = findViewById(R.id.editTextTextPersonName)
         originalWordTV = findViewById(R.id.editTextTextPersonName2)
+        listViewWords = findViewById(R.id.vocabList)
         addBtn = findViewById(R.id.button)
 
         addBtn!!.setOnClickListener { addNewWord() }
@@ -59,6 +64,8 @@ class NativeLanguage : AppCompatActivity() {
     // Adapted from Lab7-Firebase
     override fun onStart() {
         super.onStart()
+
+        Log.d("NativeLanguage", "In onStart")
 
         databaseWords.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot : DataSnapshot) {
