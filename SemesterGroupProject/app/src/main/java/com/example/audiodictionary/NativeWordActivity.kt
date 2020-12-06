@@ -1,6 +1,7 @@
 package com.example.audiodictionary
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -95,4 +96,24 @@ class NativeWordActivity : AppCompatActivity() {
         val recordingListAdapter = RecordingList(this@NativeWordActivity, recordings)
         mListViewRecordings.adapter = recordingListAdapter
     }
+
+//    private fun playAudio() {
+//        val player = MediaPlayer()
+//
+//        // TODO - Figure out how to get URL from Firebase
+//        player.setDataSource("")
+//
+//        try {
+//            player.setOnPreparedListener(MediaPlayer.OnPreparedListener {
+//
+//                override fun onPrepared(mp : MediaPlayer) {
+//                    mp.start()
+//                }
+//            })
+//            player.prepare()
+//        } catch (e: Exception) {
+//            Log.e("NativeWordActivity", e.toString())
+//        }
+//
+//    }
 }
