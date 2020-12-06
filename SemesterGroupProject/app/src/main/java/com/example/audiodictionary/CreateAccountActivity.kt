@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -18,26 +20,24 @@ class CreateAccountActivity : AppCompatActivity() {
 
     private var emailTV: EditText? = null
     private var passwordTV: EditText? = null
+    private var usernameTV: EditText? = null
     private var regBtn: Button? = null
     private var validator = Validators()
 
     private var mAuth: FirebaseAuth? = null
+    private lateinit var databaseUser : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i("CreateAccountActivity", "In onCreate of CreateAccountActivity")
         super.onCreate(savedInstanceState)
-        Log.i("CreateAccountActivity", "Stop 0")
         setContentView(R.layout.create_account)
 
         mAuth = FirebaseAuth.getInstance()
+        databaseUser = FirebaseDatabase.getInstance().getReference("User")
 
-        Log.i("CreateAccountActivity", "Stop 1")
         emailTV = findViewById(R.id.editTextTextEmailAddress)
-        Log.i("CreateAccountActivity", "Stop 2")
         passwordTV = findViewById(R.id.editTextTextPassword)
-        Log.i("CreateAccountActivity", "Stop 3")
+        usernameTV = findViewById(R.id.editTextUsername)
         regBtn = findViewById(R.id.createAccBtn)
-        Log.i("CreateAccountActivity", "Stop 4")
         regBtn!!.setOnClickListener { registerNewUser() }
     }
 
@@ -45,6 +45,7 @@ class CreateAccountActivity : AppCompatActivity() {
 
         val email: String = emailTV!!.text.toString()
         val password: String = passwordTV!!.text.toString()
+        val username: String = usernameTV!!.text.toString()
 
         if (!validator.validEmail(email)) {
             Toast.makeText(applicationContext, "Please enter a valid email...", Toast.LENGTH_LONG).show()
@@ -55,12 +56,21 @@ class CreateAccountActivity : AppCompatActivity() {
             return
         }
 
+        if (TextUtils.isEmpty(username)) {
+            Toast.makeText(applicationContext, "Please enter a username!", Toast.LENGTH_LONG).show()
+            return
+        }
+
         mAuth!!.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
 
+                    addUser(task.result!!.user!!.uid, username)
+
                     val intent = Intent(this@CreateAccountActivity, LoginActivity::class.java)
+
+                    Log.i("CreateAccountActivity", "Sending Intent to LoginActivity")
                     startActivity(intent)
                 } else {
                     Toast.makeText(applicationContext, "Registration failed! Please try again later", Toast.LENGTH_LONG).show()
@@ -68,6 +78,32 @@ class CreateAccountActivity : AppCompatActivity() {
             }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        return true
+    }
 
+    // Adds user + Settings to database
+    private fun addUser (uid : String, username : String) {
+
+        if (!TextUtils.isEmpty(username)) {
+
+            // Creating User Object
+            val user = User(username, "")
+
+            // Saving the User
+            databaseUser.child(uid).setValue(user)
+
+            Log.i("CreateAccountActivity", "Added username to database")
+
+        }
+
+    }
 
 }

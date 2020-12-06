@@ -5,14 +5,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
+import java.lang.Exception
+import java.lang.annotation.Native
 
 class LoginActivity : AppCompatActivity() {
 
@@ -24,13 +27,15 @@ class LoginActivity : AppCompatActivity() {
 
     private var mAuth: FirebaseAuth? = null
     private lateinit var createAccountButton: Button
+    private var username : String = ""
+    private lateinit var uid : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
 
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference.child("Users")
+        mDatabaseReference = mDatabase!!.reference.child("User")
         mAuth = FirebaseAuth.getInstance()
 
         userEmail = findViewById(R.id.editTextTextEmailAddress2)
@@ -73,9 +78,12 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG)
                         .show()
 
+                    uid = task.result!!.user!!.uid
+//                    getUsername()
+
                     var intent = Intent(this@LoginActivity, LanguageListActivity::class.java)
-//                    var uid = mAuth!!.currentUser?.uid
-//                    intent.putExtra("UserID", uid)
+                    intent.putExtra("USER_ID", uid)
+                    intent.putExtra("USERNAME", email)
                     startActivity(intent)
                 } else {
                     Toast.makeText(
@@ -85,5 +93,28 @@ class LoginActivity : AppCompatActivity() {
                     ).show()
                 }
             }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        return true
+    }
+
+    private fun getUsername() {
+        mDatabaseReference!!.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot : DataSnapshot) {
+                username = dataSnapshot.child(uid).getValue(User::class.java)!!.username
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // do nothing
+            }
+        })
     }
 }

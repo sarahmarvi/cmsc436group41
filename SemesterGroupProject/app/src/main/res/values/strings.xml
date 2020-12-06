@@ -15,6 +15,8 @@
     <string name="languages_french">French</string>
     <string name="languages_italian">Italian</string>
     <string name="languages_spanish">Spanish</string>
+
+    <!--    Strings for languages.xml and specified_languages.xml -->
     <string name="languages_open">Open</string>
 
 <!--    Strings for login.xml-->
@@ -32,6 +34,32 @@
     <string name="create_pass">Password</string>
     <string name="create_create">Create</string>
 
+<!--    Strings for native_language-->
+    <string name="native_language_eng">English</string>
+    <string name="native_language_add_btn">Add</string>
 
+<!--    Strings for menu.xml -->
+    <string name="menu_exit">Exit Session</string>
+
+<!--    Strings for vocab_list.xml -->
+    <string name="vocab_word">Word</string>
+    <string name="vocab_button">View</string>
+
+<!--    Strings for create_audio.xml-->
+    <string name="audio_title">Create Audio</string>
+    <string name="audio_start">\u0020\u0020Start Recording\u0020\u0020</string>
+    <string name="audio_stop">\u0020\u0020Stop Recording\u0020\u0020</string>
+    <string name="audio_play">\u0020\u0020Play Recording\u0020\u0020</string>
+    <string name="audio_add">\u0020\u0020Add Recording\u0020\u0020</string>
+    <string name="audio_explanation">Delivery Instructions:</string>
+    <string name="audio_explanation2">First say the word in English, then in</string>
+
+<!--    Strings for native_word_details-->
+    <string name="native_word_add_audio">\u0020Add Recording\u0020</string>
+
+<!--    Strings for audio_list-->
+    <string name="audio_list_user">User:\u0020</string>
+    <string name="audio_list_rate">Rating:\u0020</string>
+    <string name="audio_list_play">Play\u0020</string>
 
 </resources>
