@@ -76,9 +76,8 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG)
                         .show()
 
-                    var intent = Intent(this@LoginActivity, NativeLanguage::class.java)
+                    var intent = Intent(this@LoginActivity, Language::class.java)
                     intent.putExtra("theUser", email)
-                    intent.putExtra("LANGUAGE", "fr")
                     startActivity(intent)
                 } else {
                     Toast.makeText(
