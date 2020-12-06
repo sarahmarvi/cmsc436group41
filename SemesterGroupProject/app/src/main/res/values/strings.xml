@@ -57,4 +57,9 @@
 <!--    Strings for native_word_details-->
     <string name="native_word_add_audio">\u0020Add Recording\u0020</string>
 
+<!--    Strings for audio_list-->
+    <string name="audio_list_user">User:\u0020</string>
+    <string name="audio_list_rate">Rating:\u0020</string>
+    <string name="audio_list_play">Play\u0020</string>
+
 </resources>
