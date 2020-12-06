@@ -18,6 +18,7 @@ class LearnerLanguage : AppCompatActivity() {
 
     private lateinit var mDatabaseLanguage : DatabaseReference
     private lateinit var mDatabaseWords : DatabaseReference
+    private lateinit var langCode : String
 
     private var mTitle: TextView? = null
 
@@ -27,7 +28,7 @@ class LearnerLanguage : AppCompatActivity() {
 
         val intent = getIntent() as Intent
         val user = intent.getStringExtra("USERNAME").toString()
-        val langCode = intent.getStringExtra("LANGUAGE").toString()
+        langCode = intent.getStringExtra("LANGUAGE").toString()
 
         words = ArrayList()
         wordsId = ArrayList()
@@ -62,8 +63,18 @@ class LearnerLanguage : AppCompatActivity() {
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+        //val intent = Intent(this, MainActivity::class.java)
+        //startActivity(intent)
+        return true
+    }
+
+    override fun onSearchRequested(): Boolean {
+        val appData = Bundle().apply {
+            putString("SEARCH_LANG", langCode)
+        }
+        Log.i("LearnerLanguage", "Starting search...")
+        startSearch(null, false, appData, false)
+
         return true
     }
 
