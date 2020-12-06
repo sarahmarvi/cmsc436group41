@@ -42,6 +42,10 @@
             android:label="AudioDictionary" >
         </activity>
         <activity
+            android:name="com.example.audiodictionary.NativeWordActivity"
+            android:label="AudioDictionary">
+        </activity>
+        <activity
             android:name="com.example.audiodictionary.CreateAudio"
             android:label="AudioDictionary" >
         </activity>

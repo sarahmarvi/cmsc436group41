@@ -33,17 +33,16 @@ class NativeWordActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.learner_word_details)
+        setContentView(R.layout.native_word_details)
 
         recordings = ArrayList()
         recordingIds = ArrayList()
         ratings = ArrayList()
 
-        val intent = getIntent() as Intent
-        langCode = intent.getStringExtra("LANGUAGE").toString()
-        wordId = intent.getStringExtra("WORD_ID").toString()
-        wdOriginal = intent.getStringExtra("ORIGINAL").toString()
-        wdTranslation = intent.getStringExtra("TRANSLATION").toString()
+        langCode = intent.getStringExtra("LANGUAGE")!!
+        wordId = intent.getStringExtra("WORD_ID")!!
+        wdOriginal = intent.getStringExtra("ORIGINAL")!!
+        wdTranslation = intent.getStringExtra("TRANSLATION")!!
 
         mDatabaseLanguage = FirebaseDatabase.getInstance().getReference("Languages").child(langCode)
 //        mDatabaseWord = FirebaseDatabase.getInstance().getReference("Words").child(langCode)
@@ -51,10 +50,10 @@ class NativeWordActivity : AppCompatActivity() {
         mDatabaseRatings = FirebaseDatabase.getInstance().getReference("Ratings")
 
 
-        mTitle = findViewById(R.id.learner_word_title)
+        mTitle = findViewById(R.id.native_word_title)
         mTitle!!.text = wdTranslation
 
-        mListViewRecordings = findViewById(R.id.learner_record_rate_list)
+        mListViewRecordings = findViewById(R.id.native_record_rate_list)
 
         mRecordBtn = findViewById(R.id.add_audio_button)
 
