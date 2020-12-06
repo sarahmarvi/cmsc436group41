@@ -57,7 +57,6 @@ class NativeLanguage : AppCompatActivity() {
         mAddBtn!!.setOnClickListener { addNewWord() }
 
         mListViewWords.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
-
             val wordId = wordsId[i]
             val word = words[i]
 
@@ -88,7 +87,7 @@ class NativeLanguage : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        Log.d("NativeLanguage", "In onStart")
+        Log.d(TAG, "In onStart")
 
         mDatabaseWords.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot : DataSnapshot) {
@@ -101,7 +100,7 @@ class NativeLanguage : AppCompatActivity() {
                         word = postSnapshot.getValue(Word::class.java)
                         postSnapshot.key?.let { wordsId.add(it) }
                     } catch (e: Exception) {
-                        Log.e("NativeLanguage", e.toString())
+                        Log.e(TAG, e.toString())
                     } finally {
                         words.add(word!!)
                     }
@@ -162,7 +161,11 @@ class NativeLanguage : AppCompatActivity() {
         mEnglishTranslationTV!!.setText("")
         mOriginalWordTV!!.setText("")
 
-        Log.i("NativeLanguage", "Added username to database")
+        Log.i(TAG, "Added username to database")
 
+    }
+
+    companion object {
+        const val TAG = "NativeLanguage"
     }
 }
