@@ -9,8 +9,8 @@
 
     <ListView
         android:id="@+id/vocabList"
-        android:layout_width="384dp"
-        android:layout_height="448dp"
+        android:layout_width="395dp"
+        android:layout_height="397dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.481"
