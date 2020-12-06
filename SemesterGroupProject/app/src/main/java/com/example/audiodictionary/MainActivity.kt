@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startLearner() {
         val intent = Intent(this@MainActivity, LanguageListActivity::class.java)
-        intent.putExtra("theUser", "Learner")
+        intent.putExtra("USERNAME", "Learner")
         startActivity(intent)
     }
 

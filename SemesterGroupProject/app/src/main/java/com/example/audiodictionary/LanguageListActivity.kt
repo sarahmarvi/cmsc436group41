@@ -3,41 +3,56 @@ package com.example.audiodictionary
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.AdapterView
 import android.widget.Button
+import android.widget.ListView
 import android.widget.TextView
+import com.google.firebase.database.*
+import java.lang.Exception
 
 class LanguageListActivity : AppCompatActivity() {
 
-//    private val prevIntent = getIntent()
-//    private lateinit var uid : String
+    private lateinit var mGreetingTextView: TextView
+    private lateinit var mListViewLanguages: ListView
+    private lateinit var mDatabaseLanguage : DatabaseReference
 
-//    private lateinit var arabicButton: Button
-//    private lateinit var frenchButton: Button
-//    private lateinit var italianButton: Button
-//    private lateinit var spanishButton: Button
-    private lateinit var greetingTextView: TextView
+    internal lateinit var languages : MutableList<Language>
+    internal lateinit var languageCodes : MutableList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.languages)
 
-        val theIntent = getIntent() as Intent
-        val user = theIntent.getStringExtra("theUser").toString()
+        languages = ArrayList()
+        languageCodes = ArrayList()
 
-        greetingTextView = findViewById(R.id.languages_greeting)
-        greetingTextView.setText("Welcome, " + user)
+        val intent = getIntent() as Intent
+        val user = intent.getStringExtra("USERNAME").toString()
 
-//        if (prevIntent.hasExtra("UserId")) {
-//            uid = prevIntent.getStringExtra("UserID").toString()
-//        }
+        mListViewLanguages = findViewById(R.id.language_list)
+        mGreetingTextView = findViewById(R.id.languages_greeting)
+        mGreetingTextView.setText("Welcome, " + user)
 
+        mDatabaseLanguage =  FirebaseDatabase.getInstance().getReference("Languages")
 
-//        arabicButton = findViewById(R.id.arabic_open)
-//        frenchButton = findViewById(R.id.french_open)
-//        italianButton = findViewById(R.id.italian_open)
-//        spanishButton = findViewById(R.id.spanish_open)
+        mListViewLanguages.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
+
+            val langCode = languageCodes[i]
+
+            val clickIntent : Intent = if (user == "Learner") {
+                Intent(applicationContext, LearnerLanguage::class.java)
+            } else {
+                Intent(applicationContext, NativeLanguage::class.java)
+            }
+
+            clickIntent.putExtra("LANGUAGE", langCode)
+            clickIntent.putExtra("USERNAME", user)
+            startActivity(clickIntent)
+        }
+
 
     }
 
@@ -51,5 +66,37 @@ class LanguageListActivity : AppCompatActivity() {
         startActivity(intent)
         return true
     }
+
+    // Adapted from Lab7-Firebase
+    override fun onStart() {
+        super.onStart()
+
+        mDatabaseLanguage.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot : DataSnapshot) {
+                languages.clear()
+                languageCodes.clear()
+
+                var language : Language? = null
+                for (postSnapshot in dataSnapshot.children) {
+                    try {
+                        language = postSnapshot.getValue(Language::class.java)
+                        postSnapshot.key?.let { languageCodes.add(it) }
+                    } catch (e: Exception) {
+                        Log.e("LanguageListActivity", e.toString())
+                    } finally {
+                        languages.add(language!!)
+                    }
+                }
+                val languageListAdapter = LanguageList(this@LanguageListActivity, languages)
+                mListViewLanguages.adapter = languageListAdapter
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // do nothing
+            }
+        })
+    }
+
 
 }

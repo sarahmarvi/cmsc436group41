@@ -7,23 +7,24 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ListView
+import android.widget.*
 import com.google.firebase.database.*
 import java.lang.Exception
 
 class NativeLanguage : AppCompatActivity() {
 
-    internal lateinit var listViewWords: ListView
+    internal lateinit var mListViewWords: ListView
     internal lateinit var words : MutableList<Word>
 
-    private lateinit var databaseLanguage : DatabaseReference
-    private lateinit var databaseWords : DatabaseReference
+    private lateinit var mDatabaseLanguage : DatabaseReference
+    private lateinit var mDatabaseWords : DatabaseReference
+    internal lateinit var wordsId : MutableList<String>
 
-    private var englishTranslationTV: EditText? = null
-    private var originalWordTV: EditText? = null
-    private var addBtn : Button? = null
+    private var mTitle: TextView? = null
+    private var mAddLanguageTitle: TextView? = null
+    private var mEnglishTranslationTV: EditText? = null
+    private var mOriginalWordTV: EditText? = null
+    private var mAddBtn : Button? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,22 +32,44 @@ class NativeLanguage : AppCompatActivity() {
         setContentView(R.layout.native_language)
 
         words = ArrayList()
+        wordsId = ArrayList()
 
-        Log.d("NativeLanguage", "In onCreate")
+        val intent = getIntent() as Intent
+        val user = intent.getStringExtra("USERNAME").toString()
+        val langCode = intent.getStringExtra("LANGUAGE").toString()
 
-        databaseWords =  FirebaseDatabase.getInstance().getReference("Languages").child(
-            intent.getStringExtra("LANGUAGE").toString()).child("words")
 
-        Log.d("NativeLanguage", "After querying database")
+        mDatabaseLanguage = FirebaseDatabase.getInstance().getReference("Languages").child(
+            intent.getStringExtra("LANGUAGE").toString())
 
-//        databaseWords = databaseLanguage.child("words")
+        mDatabaseWords = FirebaseDatabase.getInstance().getReference("Words").child(
+            intent.getStringExtra("LANGUAGE").toString())
 
-        englishTranslationTV = findViewById(R.id.editTextTextPersonName)
-        originalWordTV = findViewById(R.id.editTextTextPersonName2)
-        listViewWords = findViewById(R.id.vocabList)
-        addBtn = findViewById(R.id.button)
+        mTitle = findViewById(R.id.language_learner_title)
+        mAddLanguageTitle = findViewById(R.id.native_language_add_lang)
+        mEnglishTranslationTV = findViewById(R.id.editTextTextPersonName)
+        mOriginalWordTV = findViewById(R.id.editTextTextPersonName2)
+        mListViewWords = findViewById(R.id.vocabList)
+        mAddBtn = findViewById(R.id.button)
 
-        addBtn!!.setOnClickListener { addNewWord() }
+        setTitles()
+
+        mAddBtn!!.setOnClickListener { addNewWord() }
+
+        mListViewWords.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
+
+            val wordId = wordsId[i]
+            val word = words[i]
+
+            val clickIntent : Intent = Intent(applicationContext, NativeWordActivity::class.java)
+
+
+            clickIntent.putExtra("LANGUAGE", langCode)
+            clickIntent.putExtra("WORD_ID", wordId)
+            clickIntent.putExtra("ORIGINAL", word.original)
+            clickIntent.putExtra("TRANSLATION", word.translation)
+            startActivity(clickIntent)
+        }
 
     }
 
@@ -67,14 +90,16 @@ class NativeLanguage : AppCompatActivity() {
 
         Log.d("NativeLanguage", "In onStart")
 
-        databaseWords.addValueEventListener(object : ValueEventListener {
+        mDatabaseWords.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot : DataSnapshot) {
                 words.clear()
+                wordsId.clear()
 
                 var word : Word? = null
                 for (postSnapshot in dataSnapshot.children) {
                     try {
                         word = postSnapshot.getValue(Word::class.java)
+                        postSnapshot.key?.let { wordsId.add(it) }
                     } catch (e: Exception) {
                         Log.e("NativeLanguage", e.toString())
                     } finally {
@@ -82,8 +107,23 @@ class NativeLanguage : AppCompatActivity() {
                     }
                 }
                 val wordListAdapter = WordList(this@NativeLanguage, words)
-                listViewWords.adapter = wordListAdapter
+                mListViewWords.adapter = wordListAdapter
 
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // do nothing
+            }
+        })
+    }
+
+    private fun setTitles() {
+        mDatabaseLanguage.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot : DataSnapshot) {
+                var language : Language? = dataSnapshot.getValue(Language::class.java)
+
+                mAddLanguageTitle!!.text = language!!.displayName
+                mTitle!!.text = language!!.nativeName
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -94,23 +134,35 @@ class NativeLanguage : AppCompatActivity() {
 
     private fun addNewWord() {
 
-        val englishTranslation = englishTranslationTV!!.text.toString()
-        val originalWord = originalWordTV!!.text.toString()
+        val englishTranslation = mEnglishTranslationTV!!.text.toString()
+        val originalWord = mOriginalWordTV!!.text.toString()
 
-        if (!TextUtils.isEmpty(englishTranslation) && !TextUtils.isEmpty(originalWord)) {
-
-            val id = databaseWords.push().key
-
-            // Creating User Object
-            val word = Word(originalWord, englishTranslation, "")
-
-            // Saving the Word
-            if (id != null) {
-                databaseWords.child(id).setValue(word)
-            }
-
-            Log.i("CreateAccountActivity", "Added username to database")
-
+        if (TextUtils.isEmpty(englishTranslation)) {
+            Toast.makeText(applicationContext, "Please enter translation!", Toast.LENGTH_LONG).show()
+            return
         }
+
+        if (TextUtils.isEmpty(originalWord)) {
+            Toast.makeText(applicationContext, "Please enter word!", Toast.LENGTH_LONG).show()
+            return
+        }
+
+
+        // Generating a new id for the word
+        val id = mDatabaseWords.push().key
+
+        // Creating User Object
+        val word = Word(originalWord, englishTranslation)
+
+        // Saving the Word
+        if (id != null) {
+            mDatabaseWords.child(id).setValue(word)
+        }
+
+        mEnglishTranslationTV!!.setText("")
+        mOriginalWordTV!!.setText("")
+
+        Log.i("NativeLanguage", "Added username to database")
+
     }
 }
