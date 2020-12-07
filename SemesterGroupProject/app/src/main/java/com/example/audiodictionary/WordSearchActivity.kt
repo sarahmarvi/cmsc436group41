@@ -59,9 +59,9 @@ class WordSearchActivity : AppCompatActivity() {
 
     private fun onSearchIntent(intent: Intent) {
         Log.i(TAG, "Just got a new search intent!")
+        // Built off example code from Android docs: https://developer.android.com/guide/topics/search/search-dialog#ReceivingTheQuery
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
-                //doMySearch(query)
                 langCode = intent.getStringExtra("SEARCH_LANG")!!
                 Log.i(TAG, "Received language code: $langCode")
                 searchWord(query, langCode)
@@ -83,6 +83,7 @@ class WordSearchActivity : AppCompatActivity() {
 
     // This searches using the word and the 2-letter language key
     private fun searchWord(word: String, language: String) {
+        // Search method obtained from Firebase docs: https://firebase.google.com/docs/database/rest/retrieve-data#range-queries
         val wordQuery = mDatabaseWords.child(language).orderByChild("original").startAt(word).endAt(word + "uf8ff")
         Log.i(TAG, "Seeing which words start with `$word'...")
         wordQuery.addValueEventListener(object : ValueEventListener{
@@ -108,8 +109,6 @@ class WordSearchActivity : AppCompatActivity() {
                 // do nothing
             }
         })
-        Log.i(TAG, "The words retrieved from $language: $words")
-        //Log.i(TAG, "The words retrieved from $language")
     }
 
     companion object {
