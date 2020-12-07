@@ -88,7 +88,7 @@ class WordSearchActivity : AppCompatActivity() {
         Log.i(TAG, "Seeing which words start with `$word'...")
         wordQuery.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var wordResult: Word? = null
+                var wordResult: Word?
                 for (postSnapshot in dataSnapshot.children) {
                     try {
                         wordResult = postSnapshot.getValue(Word::class.java)

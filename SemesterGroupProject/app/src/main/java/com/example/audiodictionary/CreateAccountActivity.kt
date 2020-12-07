@@ -7,10 +7,8 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -41,6 +39,7 @@ class CreateAccountActivity : AppCompatActivity() {
         regBtn!!.setOnClickListener { registerNewUser() }
     }
 
+    /* This function was adapted from Lab7-Firebase */
     private fun registerNewUser() {
 
         val email: String = emailTV!!.text.toString()
@@ -89,19 +88,13 @@ class CreateAccountActivity : AppCompatActivity() {
         return true
     }
 
-    // Adds user + Settings to database
     private fun addUser (uid : String, username : String) {
 
         if (!TextUtils.isEmpty(username)) {
-
-            // Creating User Object
             val user = User(username, "")
-
-            // Saving the User
             databaseUser.child(uid).setValue(user)
 
             Log.i("CreateAccountActivity", "Added username to database")
-
         }
 
     }

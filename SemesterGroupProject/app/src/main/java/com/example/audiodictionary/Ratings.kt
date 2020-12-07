@@ -1,3 +1,3 @@
 package com.example.audiodictionary
 
-data class Ratings (val recording : String = "", val user : String = "", val rating : Int = 0)
+data class Ratings (val rating : Float = 0f)

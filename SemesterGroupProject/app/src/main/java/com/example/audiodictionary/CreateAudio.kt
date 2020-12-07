@@ -1,40 +1,30 @@
 package com.example.audiodictionary
 
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.gesture.GestureLibraries.fromFile
 import android.media.*
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import java.io.File
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.provider.MediaStore
 import android.util.Log
 import android.widget.ImageView
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.StorageMetadata
 import java.io.IOException
 
-class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
+class CreateAudio : AppCompatActivity(), AudioManager.OnAudioFocusChangeListener {
 
     private var mediaRecorder: MediaRecorder? = null
     private var mediaPlayer: MediaPlayer? = null
@@ -65,7 +55,7 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
 
     private lateinit var uid: String
     private lateinit var username : String
-    private lateinit var word_id : String
+    private lateinit var wordID : String
 
     private lateinit var mDatabaseRecordings : DatabaseReference
 
@@ -75,9 +65,9 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
 
         uid = intent.getStringExtra("USER_ID").toString()
         username = intent.getStringExtra("USERNAME").toString()
-        word_id = intent.getStringExtra("WORD_ID").toString()
+        wordID = intent.getStringExtra("WORD_ID").toString()
 
-        mDatabaseRecordings = FirebaseDatabase.getInstance().getReference("RecordingList").child(word_id)
+        mDatabaseRecordings = FirebaseDatabase.getInstance().getReference("RecordingList").child(wordID)
 
         fileName = application.getExternalFilesDir(null)?.absolutePath + "/" + System.currentTimeMillis() + ".3gp"
 
@@ -239,14 +229,13 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
     }
 
     private fun upload() {
-
         val uri = Uri.fromFile(File(fileName))
-        val fileRef = mStorage.child(word_id + "/" + uri.lastPathSegment!!)
+        val fileRef = mStorage.child(wordID + "/" + uri.lastPathSegment!!)
 
         val metadata = StorageMetadata.Builder().setContentType("audio/3gp").build()
 
        try {
-           val task = fileRef.putFile(uri, metadata).continueWithTask { uploadTask ->
+           fileRef.putFile(uri, metadata).continueWithTask { uploadTask ->
                if(!uploadTask.isSuccessful) {
                    throw uploadTask.exception!!
                }
@@ -278,18 +267,12 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
     }
 
     private fun addToDatabase(uri: Uri) {
+        val id = mDatabaseRecordings.child(wordID).push().key
+        val record = Recording(wordID + "/" + uri.lastPathSegment.toString(), username, uid)
 
-        val id = mDatabaseRecordings.child(word_id).push().key
-
-        // Creating User Object
-        val record = Recording(word_id + "/" + uri.lastPathSegment.toString(), username, uid)
-
-        // Saving the User
         if (id != null) {
             mDatabaseRecordings.child(id).setValue(record)
         }
-
-
     }
 
 
