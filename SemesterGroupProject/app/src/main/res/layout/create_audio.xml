@@ -81,6 +81,7 @@
         android:id="@+id/audio_language_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/audio_explanation3"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"

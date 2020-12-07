@@ -54,6 +54,7 @@
     <string name="audio_add">\u0020\u0020Add Recording\u0020\u0020</string>
     <string name="audio_explanation">Delivery Instructions:</string>
     <string name="audio_explanation2">First say the word in English, then in</string>
+    <string name="audio_explanation3">your Native Language</string>
 
 <!--    Strings for native_word_details-->
     <string name="native_word_add_audio">\u0020Add Recording\u0020</string>
