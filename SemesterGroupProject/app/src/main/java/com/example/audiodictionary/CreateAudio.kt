@@ -15,6 +15,7 @@ import com.google.firebase.storage.StorageReference
 import java.io.File
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -275,6 +276,12 @@ class CreateAudio : AppCompatActivity(), AudioManager.OnAudioFocusChangeListener
         }
     }
 
+    // To allow a user to exit/sign out without letting them use the original function of the back
+    // button to go back (to a page exclusive to users signed in) after signing out.
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
 
     companion object {
         private const val REQUEST_CODE = 1

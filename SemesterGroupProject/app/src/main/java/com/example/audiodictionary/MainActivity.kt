@@ -37,4 +37,10 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this@MainActivity, LoginActivity::class.java)
         startActivity(intent)
     }
+
+    // To allow a user to exit/sign out without letting them use the original function of the back
+    // button to go back (to a page exclusive to users signed in) after signing out.
+    override fun onBackPressed() {
+        this.finishAffinity()
+    }
 }
