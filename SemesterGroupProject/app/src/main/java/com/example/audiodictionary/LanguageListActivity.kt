@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.AdapterView
-import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import com.google.firebase.database.*
@@ -29,13 +28,12 @@ class LanguageListActivity : AppCompatActivity() {
         languages = ArrayList()
         languageCodes = ArrayList()
 
-        val intent = getIntent() as Intent
         val uid = intent.getStringExtra("USER_ID").toString()
         val user = intent.getStringExtra("USERNAME").toString()
 
         mListViewLanguages = findViewById(R.id.language_list)
         mGreetingTextView = findViewById(R.id.languages_greeting)
-        mGreetingTextView.setText("Welcome, " + user)
+        mGreetingTextView.text = "Welcome, " + user
 
         mDatabaseLanguage =  FirebaseDatabase.getInstance().getReference("Languages")
 
@@ -55,8 +53,6 @@ class LanguageListActivity : AppCompatActivity() {
 
             startActivity(clickIntent)
         }
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

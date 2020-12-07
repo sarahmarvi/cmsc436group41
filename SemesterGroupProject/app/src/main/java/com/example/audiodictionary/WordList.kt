@@ -5,14 +5,13 @@ import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.TextView
 
 // Adapted from Lab7-Firebase
 class WordList (private val context: Activity, private var words: List<Word>) : ArrayAdapter<Word>(context,
     R.layout.vocab_list, words) {
 
-    @SuppressLint("InflateParams", "ViewHolder")
+    @SuppressLint("InflateParams", "ViewHolder", "SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater
         val listViewItem = inflater.inflate(R.layout.vocab_list, null, true)

@@ -7,16 +7,14 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import java.lang.Exception
-import java.lang.annotation.Native
 
+/* Class is adapted from Lab7-Firebase */
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var mDatabaseUser: DatabaseReference
@@ -51,17 +49,15 @@ class LoginActivity : AppCompatActivity() {
         createAccountButton.setOnClickListener {
             startCreateAcc()
         }
-
     }
 
     private fun startCreateAcc() {
         val intent = Intent(this@LoginActivity, CreateAccountActivity::class.java)
-        Log.i("Log Activity", "Entering CreateAccountActivity")
+        Log.i(TAG, "Entering CreateAccountActivity")
         startActivity(intent)
     }
 
     private fun loginUserAccount() {
-
         val email: String = userEmail?.text.toString()
         val password: String = userPassword?.text.toString()
 
@@ -83,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
                     uid = task.result!!.user!!.uid
                     val name = getUsername(uid)
 
-                    var intent = Intent(this@LoginActivity, LanguageListActivity::class.java)
+                    val intent = Intent(this@LoginActivity, LanguageListActivity::class.java)
                     intent.putExtra("USER_ID", uid)
                     intent.putExtra("USERNAME", name)
                     startActivity(intent)
@@ -137,9 +133,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun getUsername(id : String) : String {
-
         var index = -1
-
         for ( i in 0 until userID.size) {
             if (userID[i] == id) {
                 index = i
@@ -149,9 +143,12 @@ class LoginActivity : AppCompatActivity() {
 
         if (index == -1) {
             return ""
-        } else {
-            return users[index].username
         }
 
+        return users[index].username
+    }
+
+    companion object {
+        const val TAG = "LoginActivity"
     }
 }

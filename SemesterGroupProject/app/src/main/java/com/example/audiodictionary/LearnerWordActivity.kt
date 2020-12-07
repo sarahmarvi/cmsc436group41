@@ -1,9 +1,7 @@
 package com.example.audiodictionary
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,10 +11,9 @@ import java.lang.Exception
 class LearnerWordActivity : AppCompatActivity() {
 
     internal lateinit var mListViewRecordings: ListView
-    private var mTitle: TextView? = null
+    private lateinit var mTitle: TextView
 
     private lateinit var mDatabaseLanguage : DatabaseReference
-//    private lateinit var mDatabaseWord : DatabaseReference
     private lateinit var mDatabaseRecordings : DatabaseReference
     private lateinit var mDatabaseRatings : DatabaseReference
 
@@ -28,6 +25,7 @@ class LearnerWordActivity : AppCompatActivity() {
     private lateinit var recordings : MutableList<Recording>
     private lateinit var recordingIds : MutableList<String>
     private lateinit var ratings : MutableList<Ratings>
+    private lateinit var uids : MutableList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,26 +34,26 @@ class LearnerWordActivity : AppCompatActivity() {
         recordings = ArrayList()
         recordingIds = ArrayList()
         ratings = ArrayList()
+        uids = ArrayList()
 
-        val intent = getIntent() as Intent
         langCode = intent.getStringExtra("LANGUAGE").toString()
         wordId = intent.getStringExtra("WORD_ID").toString()
         wdOriginal = intent.getStringExtra("ORIGINAL").toString()
         wdTranslation = intent.getStringExtra("TRANSLATION").toString()
 
         mDatabaseLanguage = FirebaseDatabase.getInstance().getReference("Languages").child(langCode)
-//        mDatabaseWord = FirebaseDatabase.getInstance().getReference("Words").child(langCode)
         mDatabaseRecordings = FirebaseDatabase.getInstance().getReference("RecordingList").child(wordId)
         mDatabaseRatings = FirebaseDatabase.getInstance().getReference("Ratings")
 
 
         mTitle = findViewById(R.id.learner_word_title)
-        mTitle!!.text = wdTranslation
+        mTitle.text = wdTranslation
 
         mListViewRecordings = findViewById(R.id.learner_record_rate_list)
 
     }
 
+    // Adapted from Lab7-Firebase
     override fun onStart() {
         super.onStart()
 
@@ -74,8 +72,12 @@ class LearnerWordActivity : AppCompatActivity() {
                         recordings.add(record!!)
                     }
                 }
-//                 TODO - Get Ratings and add them to adapter
-        val recordingListAdapter = RecordingList(this@LearnerWordActivity, recordings)
+        val recordingListAdapter = LearnerRecordingList(
+            this@LearnerWordActivity,
+            recordings,
+            recordingIds,
+            uids
+        )
         mListViewRecordings.adapter = recordingListAdapter
             }
 
@@ -83,8 +85,6 @@ class LearnerWordActivity : AppCompatActivity() {
                 // do nothing
             }
         })
-
-
     }
 
 }

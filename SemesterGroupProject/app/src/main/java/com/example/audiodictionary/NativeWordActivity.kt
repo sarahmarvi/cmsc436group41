@@ -1,7 +1,6 @@
 package com.example.audiodictionary
 
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -18,7 +17,6 @@ class NativeWordActivity : AppCompatActivity() {
     private lateinit var mRecordBtn : Button
 
     private lateinit var mDatabaseLanguage : DatabaseReference
-    //    private lateinit var mDatabaseWord : DatabaseReference
     private lateinit var mDatabaseRecordings : DatabaseReference
     private lateinit var mDatabaseRatings : DatabaseReference
 
@@ -49,7 +47,6 @@ class NativeWordActivity : AppCompatActivity() {
         wdTranslation = intent.getStringExtra("TRANSLATION")!!
 
         mDatabaseLanguage = FirebaseDatabase.getInstance().getReference("Languages").child(langCode)
-//        mDatabaseWord = FirebaseDatabase.getInstance().getReference("Words").child(langCode)
         mDatabaseRecordings = FirebaseDatabase.getInstance().getReference("RecordingList").child(wordId)
         mDatabaseRatings = FirebaseDatabase.getInstance().getReference("Ratings")
 
@@ -91,9 +88,9 @@ class NativeWordActivity : AppCompatActivity() {
                     } finally {
                         recordings.add(record!!)
                     }
+
                 }
-                // TODO - Get Ratings and add them to adapter
-                val recordingListAdapter = RecordingList(this@NativeWordActivity, recordings)
+                val recordingListAdapter = NativeRecordingList(this@NativeWordActivity, recordings, recordingIds, uid)
                 mListViewRecordings.adapter = recordingListAdapter
             }
 

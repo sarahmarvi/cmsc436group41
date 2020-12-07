@@ -8,11 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.RatingBar
 import android.widget.TextView
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import java.lang.Exception
 
-class RecordingList (private val context: Activity, private var recordings: List<Recording>) : ArrayAdapter<Recording>(context,
+class NativeRecordingList(
+    private val context: Activity,
+    private var recordings: List<Recording>,
+    private var recordingID: List<String>,
+    private val uid: String
+) : ArrayAdapter<Recording>(context,
     R.layout.audio_list, recordings) {
 
     @SuppressLint("InflateParams", "ViewHolder")
@@ -22,11 +28,16 @@ class RecordingList (private val context: Activity, private var recordings: List
 
         val textViewUserName = listViewItem.findViewById<View>(R.id.textView9) as TextView
         val playBtn = listViewItem.findViewById<Button>(R.id.button2)
+        val ratingBar = listViewItem.findViewById<RatingBar>(R.id.ratingBar)
 
         val record = recordings[position]
         textViewUserName.text = record.user
 
         playBtn.setOnClickListener { playAudio(recordings[position]) }
+        ratingBar.setOnRatingBarChangeListener { _: RatingBar?, rating: Float, _: Boolean ->
+            Log.i(TAG, "Just received a rating of $rating")
+            sendRating(recordingID[position], uid, rating)
+        }
 
         return listViewItem
     }
@@ -34,7 +45,7 @@ class RecordingList (private val context: Activity, private var recordings: List
     private fun playAudio(record : Recording) {
         val storage = FirebaseStorage.getInstance()
 
-        val storageRef = storage.reference.child(record.audioFile).downloadUrl.addOnSuccessListener {
+        storage.reference.child(record.audioFile).downloadUrl.addOnSuccessListener {
             val mediaPlayer = MediaPlayer()
             mediaPlayer.setDataSource(it.toString())
             mediaPlayer.setOnPreparedListener { player ->
@@ -42,7 +53,17 @@ class RecordingList (private val context: Activity, private var recordings: List
             }
             mediaPlayer.prepareAsync()
         }
+    }
 
+    private fun sendRating(recordingID: String, uid: String, ratings: Float) {
+        val rating = Ratings(ratings)
+        val mDatabaseRatings = FirebaseDatabase.getInstance().getReference("Ratings")
 
+        mDatabaseRatings.child(recordingID).child(uid).setValue(rating)
+        Log.i(TAG, "User has given <Recording: $recordingID> a $rating")
+    }
+
+    companion object {
+        const val TAG = "RecordingList"
     }
 }

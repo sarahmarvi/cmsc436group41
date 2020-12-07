@@ -29,8 +29,6 @@ class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.learner_language)
 
-        val intent = getIntent() as Intent
-        val user = intent.getStringExtra("USERNAME").toString()
         langCode = intent.getStringExtra("LANGUAGE").toString()
 
         words = ArrayList()
@@ -44,12 +42,11 @@ class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
 
         setTitle()
 
-        mListViewWords.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
-
+        mListViewWords.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ ->
             val wordId = wordsId[i]
             val word = words[i]
 
-            val clickIntent : Intent = Intent(applicationContext, LearnerWordActivity::class.java)
+            val clickIntent = Intent(applicationContext, LearnerWordActivity::class.java)
 
 
             clickIntent.putExtra("LANGUAGE", langCode)
@@ -73,18 +70,18 @@ class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
 
         return true
     }
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val intent = Intent(this, MainActivity::class.java)
-//        startActivity(intent)
-//        return true
-//    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        return true
+    }
 
     override fun onQueryTextSubmit(search: String?): Boolean {
         val intent = Intent(this@LearnerLanguage, WordSearchActivity::class.java)
 
         intent.putExtra(SearchManager.QUERY, search)
         intent.putExtra("SEARCH_LANG", langCode)
-        intent.setAction(Intent.ACTION_SEARCH)
+        intent.action = Intent.ACTION_SEARCH
         startActivity(intent)
 
         Log.i(TAG, "Starting search of words starting with `${search}'...")
@@ -129,7 +126,7 @@ class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
     private fun setTitle() {
         mDatabaseLanguage.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot : DataSnapshot) {
-                var language : Language? = dataSnapshot.getValue(Language::class.java)
+                val language : Language? = dataSnapshot.getValue(Language::class.java)
 
                 mTitle!!.text = language!!.nativeName
             }

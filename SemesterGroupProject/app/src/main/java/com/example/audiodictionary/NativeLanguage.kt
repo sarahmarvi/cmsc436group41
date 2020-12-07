@@ -38,7 +38,6 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
         words = ArrayList()
         wordsId = ArrayList()
 
-        val intent = getIntent() as Intent
         val uid = intent.getStringExtra("USER_ID").toString()
         val user = intent.getStringExtra("USERNAME").toString()
         langCode = intent.getStringExtra("LANGUAGE").toString()
@@ -59,11 +58,11 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
 
         mAddBtn!!.setOnClickListener { addNewWord() }
 
-        mListViewWords.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
+        mListViewWords.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ ->
             val wordId = wordsId[i]
             val word = words[i]
 
-            val clickIntent : Intent = Intent(applicationContext, NativeWordActivity::class.java)
+            val clickIntent = Intent(applicationContext, NativeWordActivity::class.java)
 
             clickIntent.putExtra("USERNAME", user)
             clickIntent.putExtra("USER_ID", uid)
@@ -90,8 +89,8 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val intent = Intent(this, MainActivity::class.java)
-//        startActivity(intent)
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
         return true
     }
 
@@ -100,7 +99,7 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
 
         intent.putExtra(SearchManager.QUERY, search)
         intent.putExtra("SEARCH_LANG", langCode)
-        intent.setAction(Intent.ACTION_SEARCH)
+        intent.action = Intent.ACTION_SEARCH
         startActivity(intent)
 
         Log.i(TAG, "Starting search of words starting with `${search}'...")
@@ -147,10 +146,10 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
     private fun setTitles() {
         mDatabaseLanguage.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot : DataSnapshot) {
-                var language : Language? = dataSnapshot.getValue(Language::class.java)
+                val language : Language? = dataSnapshot.getValue(Language::class.java)
 
-                mAddLanguageTitle!!.text = language!!.displayName
-                mTitle!!.text = language!!.nativeName
+                mAddLanguageTitle!!.text = language?.displayName
+                mTitle!!.text = language?.nativeName
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -174,14 +173,8 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
             return
         }
 
-
-        // Generating a new id for the word
         val id = mDatabaseWords.push().key
-
-        // Creating User Object
         val word = Word(originalWord, englishTranslation)
-
-        // Saving the Word
         if (id != null) {
             mDatabaseWords.child(id).setValue(word)
         }
@@ -190,7 +183,6 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
         mOriginalWordTV!!.setText("")
 
         Log.i(TAG, "Added username to database")
-
     }
 
     companion object {
