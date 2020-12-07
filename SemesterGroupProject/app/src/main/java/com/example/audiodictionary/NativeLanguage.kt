@@ -82,6 +82,7 @@ class NativeLanguage : AppCompatActivity() {
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu.findItem(R.id.search).actionView as SearchView).apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            isIconifiedByDefault = false
         }
 
         return true

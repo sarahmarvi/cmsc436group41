@@ -1,5 +1,7 @@
 package com.example.audiodictionary
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -60,6 +62,14 @@ class LearnerLanguage : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
+
+        // word searches
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu.findItem(R.id.search).actionView as SearchView).apply {
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            isIconifiedByDefault = false
+        }
+
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -72,7 +82,7 @@ class LearnerLanguage : AppCompatActivity() {
         val appData = Bundle().apply {
             putString("SEARCH_LANG", langCode)
         }
-        Log.i("LearnerLanguage", "Starting search...")
+        Log.i(TAG, "Starting search...")
         startSearch(null, false, appData, false)
 
         return true
@@ -93,7 +103,7 @@ class LearnerLanguage : AppCompatActivity() {
                         word = postSnapshot.getValue(Word::class.java)
                         postSnapshot.key?.let { wordsId.add(it) }
                     } catch (e: Exception) {
-                        Log.e("LearnerLanguage", e.toString())
+                        Log.e(TAG, e.toString())
                     } finally {
                         words.add(word!!)
                     }
@@ -122,6 +132,10 @@ class LearnerLanguage : AppCompatActivity() {
             }
         })
 
-        Log.d("LearnerLanguage", "Completed Set Title")
+        Log.d(TAG, "Completed Set Title")
+    }
+
+    companion object {
+        const val TAG = "LearnerLanguage"
     }
 }

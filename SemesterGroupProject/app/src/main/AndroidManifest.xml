@@ -42,8 +42,6 @@
             android:name="com.example.audiodictionary.NativeLanguage"
             android:windowSoftInputMode="adjustPan"
             android:label="AudioDictionary" >
-            <meta-data android:name="android.app.default_searchable"
-                android:value="com.example.audiodictionary.WordSearchActivity" />
         </activity>
         <activity
             android:name="com.example.audiodictionary.NativeWordActivity"
@@ -59,8 +57,7 @@
         </activity>
         <activity
             android:name="com.example.audiodictionary.WordSearchActivity"
-            android:label="WordSearchActivity"
-            android:launchMode="singleTop" >
+            android:label="WordSearchActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

@@ -26,10 +26,11 @@ class WordSearchActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        setIntent(intent)
         onSearchIntent(intent)
     }
 
-    fun onSearchIntent(intent: Intent) {
+    private fun onSearchIntent(intent: Intent) {
         Log.i(TAG, "Just got a new search intent!")
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
@@ -62,7 +63,7 @@ class WordSearchActivity : AppCompatActivity() {
     }*/
 
     // This searches using the word and the 2-letter language key
-    fun searchWord(word: String, language: String) {
+    private fun searchWord(word: String, language: String) {
         //val words = mDatabaseWords.child(language)
         //Log.i(TAG, "The words retrieved from $language: $words")
         Log.i(TAG, "The words retrieved from $language")
