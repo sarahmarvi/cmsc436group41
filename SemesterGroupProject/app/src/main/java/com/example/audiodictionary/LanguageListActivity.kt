@@ -97,5 +97,12 @@ class LanguageListActivity : AppCompatActivity() {
         })
     }
 
+    // To allow a user to exit/sign out without letting them use the original function of the back
+    // button to go back (to a page exclusive to users signed in) after signing out.
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
 
 }

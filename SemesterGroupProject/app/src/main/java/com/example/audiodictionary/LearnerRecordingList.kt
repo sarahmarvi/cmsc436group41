@@ -83,4 +83,5 @@ class LearnerRecordingList(
         ratingBar.rating = (ratingNum/counter)
         Log.i("LearnerRecordingList", "Counter = $counter Ratingnum = $ratingNum")
     }
+
 }
