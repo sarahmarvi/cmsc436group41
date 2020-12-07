@@ -49,6 +49,10 @@
             android:name="com.example.audiodictionary.CreateAudio"
             android:label="AudioDictionary" >
         </activity>
+        <activity
+            android:name="com.example.audiodictionary.LearnerWordActivity"
+            android:label="AudioDictionary">
+        </activity>
     </application>
 
 </manifest>

@@ -74,9 +74,9 @@ class LearnerWordActivity : AppCompatActivity() {
                         recordings.add(record!!)
                     }
                 }
-                // TODO - Get Ratings and add them to adapter
-//        val recordingListAdapter = RecordingList(this@LearnerWordActivity, recordings)
-//        mListViewRecordings.adapter = recordingListAdapter
+//                 TODO - Get Ratings and add them to adapter
+        val recordingListAdapter = RecordingList(this@LearnerWordActivity, recordings)
+        mListViewRecordings.adapter = recordingListAdapter
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
