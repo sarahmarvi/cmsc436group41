@@ -1,5 +1,7 @@
 package com.example.audiodictionary
 
+// This class is taken from Lab-7 Firebase so that we can validate emails and passwords that
+// a user enters when creating an account
 class Validators {
 
     fun validEmail(email: String?) : Boolean {
