@@ -27,6 +27,10 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.StorageMetadata
 import java.io.IOException
 
 class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
@@ -36,8 +40,6 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
 
     private val mAudioPerm = Manifest.permission.RECORD_AUDIO
     private val mFileWritePerm = Manifest.permission.WRITE_EXTERNAL_STORAGE
-
-    private var audioFilePath: String? = null
 
     private lateinit var startRecordingBtn: Button
     private lateinit var playRecordingBtn: Button
@@ -58,22 +60,32 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
 
     private lateinit var mStorage: StorageReference
     private lateinit var fileName: String
-    private lateinit var uid: String
 
+    private lateinit var uid: String
+    private lateinit var username : String
+    private lateinit var word_id : String
+
+    private lateinit var mDatabaseRecordings : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_audio)
 
-        fileName = application.getExternalFilesDir(null)?.absolutePath + "/recording123.3gp"
+        uid = intent.getStringExtra("USER_ID").toString()
+        username = intent.getStringExtra("USERNAME").toString()
+        word_id = intent.getStringExtra("WORD_ID").toString()
+
+        mDatabaseRecordings = FirebaseDatabase.getInstance().getReference("RecordingList").child(word_id)
+
+        fileName = application.getExternalFilesDir(null)?.absolutePath + "/" + System.currentTimeMillis() + ".3gp"
 
         mAudioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
-        mStorage = FirebaseStorage.getInstance().getReference()
+        mStorage = FirebaseStorage.getInstance().reference
 
         startRecordingBtn = findViewById(R.id.button3)
-        playRecordingBtn = findViewById(R.id.button4)
-        submitBtn = findViewById(R.id.button5)
+        playRecordingBtn = findViewById(R.id.button5)
+        submitBtn = findViewById(R.id.button4)
 
         // Check for the audio and write permissions
         if (PackageManager.PERMISSION_GRANTED == checkSelfPermission(mAudioPerm) &&
@@ -164,11 +176,6 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
             }
         }
 
-
-
-//        audioFilePath = Environment.getExternalStorageDirectory()
-//            .absolutePath + "/myaudio.3gp"
-
         submitBtn.setOnClickListener { upload() }
     }
 
@@ -224,23 +231,31 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
         }
     }
 
-
-
-
     private fun upload() {
 
-        val filepath = mStorage.child("Audio").child(uid)
-        val uri = Uri.fromFile(File(audioFilePath))
+        val uri = Uri.fromFile(File(fileName))
+        val fileRef = mStorage.child(word_id).child(uri.lastPathSegment!!)
 
-        try {
-            filepath.putFile(uri).addOnSuccessListener {
-                Toast.makeText(this, "Successfully Uploaded", Toast.LENGTH_LONG).show()
-            }
-        }catch (e: Exception) {
-            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
-        }
+        val metadata = StorageMetadata.Builder().setContentType("audio/3gp").build()
 
+       try {
+           val task = fileRef.putFile(uri, metadata).continueWithTask { uploadTask ->
+               if(!uploadTask.isSuccessful) {
+                   throw uploadTask.exception!!
+               }
 
+               return@continueWithTask fileRef.downloadUrl
+           }.addOnCompleteListener { task ->
+               if (task.isSuccessful) {
+                   Toast.makeText(applicationContext, "Recording Uploaded", Toast.LENGTH_LONG).show()
+               }
+           }
+
+           addToDatabase(uri)
+
+       } catch (e : Exception) {
+           Log.e("CreateAudio", e.toString())
+       }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, results: IntArray) {
@@ -253,6 +268,21 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
                 }
             }
         }
+    }
+
+    private fun addToDatabase(uri: Uri) {
+
+        val id = mDatabaseRecordings.child(word_id).push().key
+
+        // Creating User Object
+        val record = Recording(uri.lastPathSegment.toString(), username, uid)
+
+        // Saving the User
+        if (id != null) {
+            mDatabaseRecordings.child(id).setValue(record)
+        }
+
+
     }
 
 

@@ -30,6 +30,7 @@ class LanguageListActivity : AppCompatActivity() {
         languageCodes = ArrayList()
 
         val intent = getIntent() as Intent
+        val uid = intent.getStringExtra("USER_ID").toString()
         val user = intent.getStringExtra("USERNAME").toString()
 
         mListViewLanguages = findViewById(R.id.language_list)
@@ -46,10 +47,12 @@ class LanguageListActivity : AppCompatActivity() {
                 Intent(applicationContext, LearnerLanguage::class.java)
             } else {
                 Intent(applicationContext, NativeLanguage::class.java)
+                .putExtra("USER_ID", uid)
             }
 
             clickIntent.putExtra("LANGUAGE", langCode)
             clickIntent.putExtra("USERNAME", user)
+
             startActivity(clickIntent)
         }
 

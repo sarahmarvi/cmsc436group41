@@ -19,23 +19,25 @@ import java.lang.annotation.Native
 
 class LoginActivity : AppCompatActivity() {
 
-    private var mDatabaseReference: DatabaseReference? = null
-    private var mDatabase: FirebaseDatabase? = null
+    private lateinit var mDatabaseUser: DatabaseReference
     private var userEmail: EditText? = null
     private var userPassword: EditText? = null
     private var loginBtn: Button? = null
 
     private var mAuth: FirebaseAuth? = null
     private lateinit var createAccountButton: Button
-    private var username : String = ""
+    private lateinit var userID : MutableList<String>
+    private lateinit var users : MutableList<User>
     private lateinit var uid : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
 
-        mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference.child("User")
+        users = ArrayList()
+        userID = ArrayList()
+
+        mDatabaseUser = FirebaseDatabase.getInstance().getReference("User")
         mAuth = FirebaseAuth.getInstance()
 
         userEmail = findViewById(R.id.editTextTextEmailAddress2)
@@ -79,11 +81,11 @@ class LoginActivity : AppCompatActivity() {
                         .show()
 
                     uid = task.result!!.user!!.uid
-//                    getUsername()
+                    val name = getUsername(uid)
 
                     var intent = Intent(this@LoginActivity, LanguageListActivity::class.java)
                     intent.putExtra("USER_ID", uid)
-                    intent.putExtra("USERNAME", email)
+                    intent.putExtra("USERNAME", name)
                     startActivity(intent)
                 } else {
                     Toast.makeText(
@@ -106,15 +108,50 @@ class LoginActivity : AppCompatActivity() {
         return true
     }
 
-    private fun getUsername() {
-        mDatabaseReference!!.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot : DataSnapshot) {
-                username = dataSnapshot.child(uid).getValue(User::class.java)!!.username
+    override fun onStart() {
+        super.onStart()
+
+        mDatabaseUser.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                users.clear()
+                userID.clear()
+
+                var user : User? = null
+                for (postSnapshot in dataSnapshot.children) {
+                    try {
+                        user = postSnapshot.getValue(User::class.java)
+                        postSnapshot.key?.let { userID.add(it) }
+                    } catch (e: Exception) {
+                        Log.e("LanguageListActivity", e.toString())
+                    } finally {
+                        users.add(user!!)
+                    }
+                }
+
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // do nothing
+            override fun onCancelled(p0: DatabaseError) {
+                // Do Nothing
             }
         })
+    }
+
+    private fun getUsername(id : String) : String {
+
+        var index = -1
+
+        for ( i in 0 until userID.size) {
+            if (userID[i] == id) {
+                index = i
+                break
+            }
+        }
+
+        if (index == -1) {
+            return ""
+        } else {
+            return users[index].username
+        }
+
     }
 }

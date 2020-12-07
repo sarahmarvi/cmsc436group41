@@ -26,6 +26,8 @@ class NativeWordActivity : AppCompatActivity() {
     private lateinit var wordId : String
     private lateinit var wdOriginal : String
     private lateinit var wdTranslation : String
+    private lateinit var user : String
+    private lateinit var uid : String
 
     private lateinit var recordings : MutableList<Recording>
     private lateinit var recordingIds : MutableList<String>
@@ -39,6 +41,8 @@ class NativeWordActivity : AppCompatActivity() {
         recordingIds = ArrayList()
         ratings = ArrayList()
 
+        user = intent.getStringExtra("USERNAME")!!
+        uid = intent.getStringExtra("USER_ID")!!
         langCode = intent.getStringExtra("LANGUAGE")!!
         wordId = intent.getStringExtra("WORD_ID")!!
         wdOriginal = intent.getStringExtra("ORIGINAL")!!
@@ -60,6 +64,10 @@ class NativeWordActivity : AppCompatActivity() {
         mRecordBtn.setOnClickListener {
 
             val clickIntent = Intent(this@NativeWordActivity, CreateAudio::class.java)
+
+            clickIntent.putExtra("WORD_ID", wordId)
+            clickIntent.putExtra("USERNAME", user)
+            clickIntent.putExtra("USER_ID", uid)
 
             startActivity(clickIntent)
         }

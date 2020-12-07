@@ -1,3 +1,3 @@
 package com.example.audiodictionary
 
-data class Recording (val audioFile : String = "", val user : String = "")
+data class Recording (val audioFile : String = "", val user : String = "", val userID : String = "")

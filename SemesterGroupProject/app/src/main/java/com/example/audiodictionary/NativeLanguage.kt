@@ -35,6 +35,7 @@ class NativeLanguage : AppCompatActivity() {
         wordsId = ArrayList()
 
         val intent = getIntent() as Intent
+        val uid = intent.getStringExtra("USER_ID").toString()
         val user = intent.getStringExtra("USERNAME").toString()
         val langCode = intent.getStringExtra("LANGUAGE").toString()
 
@@ -62,7 +63,8 @@ class NativeLanguage : AppCompatActivity() {
 
             val clickIntent : Intent = Intent(applicationContext, NativeWordActivity::class.java)
 
-
+            clickIntent.putExtra("USERNAME", user)
+            clickIntent.putExtra("USER_ID", uid)
             clickIntent.putExtra("LANGUAGE", langCode)
             clickIntent.putExtra("WORD_ID", wordId)
             clickIntent.putExtra("ORIGINAL", word.original)
