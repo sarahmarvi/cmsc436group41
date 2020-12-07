@@ -96,12 +96,29 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
+
+        // Hide search on this page
+        menu.findItem(R.id.search).isVisible = false
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        return true
+        when (item.itemId) {
+            R.id.search -> {
+                // Tell user that this page cannot use searching
+                Toast.makeText(this, "Cannot search on this page.", Toast.LENGTH_LONG).show()
+                return false
+            }
+            R.id.exit_option -> {
+                // Exit session button
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
     }
 
     override fun onStart() {
@@ -148,14 +165,14 @@ class LoginActivity : AppCompatActivity() {
         return users[index].username
     }
 
-    companion object {
-        const val TAG = "LoginActivity"
-    }
-
     // To allow a user to exit/sign out without letting them use the original function of the back
     // button to go back (to a page exclusive to users signed in) after signing out.
     override fun onBackPressed() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+    }
+  
+    companion object {
+        const val TAG = "LoginActivity"
     }
 }
