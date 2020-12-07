@@ -26,38 +26,37 @@
         </activity>
         <activity
             android:name="com.example.audiodictionary.LoginActivity"
-            android:label="AudioDictionary" >
+            android:label="Log in" >
         </activity>
         <activity
             android:name="com.example.audiodictionary.CreateAccountActivity"
-            android:label="AudioDictionary" >
+            android:label="Create account" >
         </activity>
         <activity
             android:name="com.example.audiodictionary.LearnerLanguage"
-            android:label="AudioDictionary" >
+            android:label="Audio Dictionary" >
         </activity>
         <activity
             android:name="com.example.audiodictionary.NativeLanguage"
             android:windowSoftInputMode="adjustPan"
-            android:label="AudioDictionary">
+            android:label="Audio Dictionary">
         </activity>
         <activity
             android:name="com.example.audiodictionary.NativeWordActivity"
-            android:label="AudioDictionary">
+            android:label="Audio Dictionary">
         </activity>
         <activity
             android:name="com.example.audiodictionary.CreateAudio"
-            android:label="AudioDictionary" >
+            android:label="Audio Dictionary" >
         </activity>
         <activity
             android:name="com.example.audiodictionary.LearnerWordActivity"
-            android:label="AudioDictionary">
+            android:label="Audio Dictionary">
         </activity>
         <activity
             android:name="com.example.audiodictionary.WordSearchActivity"
-            android:label="WordSearchActivity" >
-        android:label="WordSearchActivity"
-        android:launchMode="singleTop" >
+            android:label="Search"
+            android:launchMode="singleTop" >
         <intent-filter>
             <action android:name="android.intent.action.SEARCH" />
         </intent-filter>
