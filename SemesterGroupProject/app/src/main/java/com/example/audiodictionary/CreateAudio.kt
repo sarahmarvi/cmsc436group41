@@ -234,7 +234,7 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
     private fun upload() {
 
         val uri = Uri.fromFile(File(fileName))
-        val fileRef = mStorage.child(word_id).child(uri.lastPathSegment!!)
+        val fileRef = mStorage.child(word_id + "/" + uri.lastPathSegment!!)
 
         val metadata = StorageMetadata.Builder().setContentType("audio/3gp").build()
 
@@ -275,7 +275,7 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
         val id = mDatabaseRecordings.child(word_id).push().key
 
         // Creating User Object
-        val record = Recording(uri.lastPathSegment.toString(), username, uid)
+        val record = Recording(word_id + "/" + uri.lastPathSegment.toString(), username, uid)
 
         // Saving the User
         if (id != null) {

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
+import com.google.firebase.storage.FirebaseStorage
 import java.lang.Exception
 
 class RecordingList (private val context: Activity, private var recordings: List<Recording>) : ArrayAdapter<Recording>(context,
@@ -25,27 +26,23 @@ class RecordingList (private val context: Activity, private var recordings: List
         val record = recordings[position]
         textViewUserName.text = record.user
 
-        playBtn.setOnClickListener { playAudio() }
+        playBtn.setOnClickListener { playAudio(recordings[position]) }
 
         return listViewItem
     }
 
-    private fun playAudio() {
-//        val player = MediaPlayer()
-//
-//        // TODO - Figure out how to get URL from Firebase
-//        player.setDataSource("")
-//
-//        try {
-//            player.setOnPreparedListener(MediaPlayer.OnPreparedListener {
-//
-//                override fun onPrepared(mp : MediaPlayer) {
-//                    mp.start()
-//                }
-//            })
-//            player.prepare()
-//        } catch (e: Exception) {
-//            Log.e("NativeWordActivity", e.toString())
-//        }
+    private fun playAudio(record : Recording) {
+        val storage = FirebaseStorage.getInstance()
+
+        val storageRef = storage.reference.child(record.audioFile).downloadUrl.addOnSuccessListener {
+            val mediaPlayer = MediaPlayer()
+            mediaPlayer.setDataSource(it.toString())
+            mediaPlayer.setOnPreparedListener { player ->
+                player.start()
+            }
+            mediaPlayer.prepareAsync()
+        }
+
+
     }
- }
+}
