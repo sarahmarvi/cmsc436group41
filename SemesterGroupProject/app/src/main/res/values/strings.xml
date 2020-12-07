@@ -8,7 +8,7 @@
     <string name="welcome_question">Who are you?</string>
     <string name="welcome_learner">\u0020\u0020Learner\u0020\u0020</string>
     <string name="welcome_Native">\u0020\u0020\u0020Native\u0020\u0020\u0020</string>
-    <string name="welcome_logo_descr">audiodictionarylogo</string>
+    <string name="welcome_logo_descr">audiodictionarylogo_image</string>
 
 <!--    Strings for languages.xml-->
     <string name="languages_title">Languages</string>
@@ -55,6 +55,9 @@
     <string name="audio_explanation">Delivery Instructions:</string>
     <string name="audio_explanation2">First say the word in English, then in</string>
     <string name="audio_explanation3">your Native Language</string>
+    <string name="audio_mic_direct">Tap the microphone to start/stop recording</string>
+    <string name="audio_mic_explanation">microphone_image</string>
+    <string name="audio_ring_explanation">ring_image</string>
 
 <!--    Strings for native_word_details-->
     <string name="native_word_add_audio">\u0020Add Recording\u0020</string>
