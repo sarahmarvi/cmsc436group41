@@ -20,25 +20,27 @@ class LearnerRecordingList(
     private val context: Activity,
     private var recordings: List<Recording>,
     private var recordingID: List<String>,
-    private var uids: List<String>
+    private val mRatingsSnapshot: DataSnapshot
 ) : ArrayAdapter<Recording>(context,
     R.layout.audio_list, recordings) {
 
     private lateinit var ratingBar : RatingBar
+    private lateinit var textViewUserName : TextView
 
     @SuppressLint("InflateParams", "ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater
         val listViewItem = inflater.inflate(R.layout.audio_list, null, true)
 
-        val textViewUserName = listViewItem.findViewById<View>(R.id.textView9) as TextView
+        textViewUserName = listViewItem.findViewById<View>(R.id.textView9) as TextView
         val playBtn = listViewItem.findViewById<Button>(R.id.button2)
         ratingBar = listViewItem.findViewById(R.id.ratingBar)
 
         val record = recordings[position]
         textViewUserName.text = record.user
 
-        getRating(recordingID[position])
+        getRating(recordingID[position], mRatingsSnapshot)
+        ratingBar.isEnabled = false
 
         playBtn.setOnClickListener { playAudio(recordings[position]) }
         ratingBar.setOnRatingBarChangeListener { _: RatingBar?, rating: Float, _: Boolean ->
@@ -51,7 +53,7 @@ class LearnerRecordingList(
     private fun playAudio(record : Recording) {
         val storage = FirebaseStorage.getInstance()
 
-        val storageRef = storage.reference.child(record.audioFile).downloadUrl.addOnSuccessListener {
+        storage.reference.child(record.audioFile).downloadUrl.addOnSuccessListener {
             val mediaPlayer = MediaPlayer()
             mediaPlayer.setDataSource(it.toString())
             mediaPlayer.setOnPreparedListener { player ->
@@ -61,36 +63,24 @@ class LearnerRecordingList(
         }
     }
 
-    private fun getRating(recordingID: String) {
+    private fun getRating(recordingID: String, snapshot: DataSnapshot) {
+        var ratingNum = 0f
+        var counter = 0f
+        var user : Ratings?
+        val snapshotChildren = snapshot.child("Ratings").child(recordingID).children
 
-        if (uids.isEmpty()) {
-            return
+        for (postSnapshot in snapshotChildren) {
+            user = postSnapshot.getValue(Ratings::class.java)
+
+            ratingNum += user!!.rating
+            counter += 1f
         }
 
-        val mDatabaseRatings = FirebaseDatabase.getInstance().getReference("Ratings").child(recordingID)
+        if (counter == 0f) {
+            ratingBar.rating = 0f
+        }
 
-        mDatabaseRatings.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot : DataSnapshot) {
-                var ratingNum = 0f
-                var counter = 0f
-
-                var user : Ratings?
-                for (postSnapshot in dataSnapshot.children) {
-                    user = postSnapshot.getValue(Ratings::class.java)
-
-                    ratingNum += user!!.rating
-                    counter += 1f
-
-                }
-
-                ratingBar.rating = (ratingNum/counter)
-
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // do nothing
-            }
-        })
-
+        ratingBar.rating = (ratingNum/counter)
+        Log.i("LearnerRecordingList", "Counter = $counter Ratingnum = $ratingNum")
     }
 }

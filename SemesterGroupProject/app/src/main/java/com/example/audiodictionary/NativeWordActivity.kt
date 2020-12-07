@@ -16,9 +16,8 @@ class NativeWordActivity : AppCompatActivity() {
     private var mTitle: TextView? = null
     private lateinit var mRecordBtn : Button
 
-    private lateinit var mDatabaseLanguage : DatabaseReference
     private lateinit var mDatabaseRecordings : DatabaseReference
-    private lateinit var mDatabaseRatings : DatabaseReference
+    private lateinit var mRatingsSnapshot: DataSnapshot
 
     private lateinit var langCode : String
     private lateinit var wordId : String
@@ -46,9 +45,7 @@ class NativeWordActivity : AppCompatActivity() {
         wdOriginal = intent.getStringExtra("ORIGINAL")!!
         wdTranslation = intent.getStringExtra("TRANSLATION")!!
 
-        mDatabaseLanguage = FirebaseDatabase.getInstance().getReference("Languages").child(langCode)
-        mDatabaseRecordings = FirebaseDatabase.getInstance().getReference("RecordingList").child(wordId)
-        mDatabaseRatings = FirebaseDatabase.getInstance().getReference("Ratings")
+        mDatabaseRecordings = FirebaseDatabase.getInstance().getReference("RecordingList")
 
 
         mTitle = findViewById(R.id.native_word_title)
@@ -77,9 +74,10 @@ class NativeWordActivity : AppCompatActivity() {
         mDatabaseRecordings.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot : DataSnapshot) {
                 recordings.clear()
+                mRatingsSnapshot = dataSnapshot
 
                 var record : Recording? = null
-                for (postSnapshot in dataSnapshot.children) {
+                for (postSnapshot in dataSnapshot.child(wordId).children) {
                     try {
                         record = postSnapshot.getValue(Recording::class.java)
                         postSnapshot.key?.let { recordingIds.add(it) }
@@ -90,7 +88,7 @@ class NativeWordActivity : AppCompatActivity() {
                     }
 
                 }
-                val recordingListAdapter = NativeRecordingList(this@NativeWordActivity, recordings, recordingIds, uid)
+                val recordingListAdapter = NativeRecordingList(this@NativeWordActivity, recordings, recordingIds, uid, mRatingsSnapshot)
                 mListViewRecordings.adapter = recordingListAdapter
             }
 
