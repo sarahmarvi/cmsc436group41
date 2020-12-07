@@ -1,5 +1,7 @@
 package com.example.audiodictionary
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,7 +12,7 @@ import android.widget.*
 import com.google.firebase.database.*
 import java.lang.Exception
 
-class LearnerLanguage : AppCompatActivity() {
+class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     internal lateinit var mListViewWords: ListView
     internal lateinit var words : MutableList<Word>
@@ -21,13 +23,15 @@ class LearnerLanguage : AppCompatActivity() {
 
     private var mTitle: TextView? = null
 
+    private lateinit var langCode : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.learner_language)
 
         val intent = getIntent() as Intent
         val user = intent.getStringExtra("USERNAME").toString()
-        val langCode = intent.getStringExtra("LANGUAGE").toString()
+        langCode = intent.getStringExtra("LANGUAGE").toString()
 
         words = ArrayList()
         wordsId = ArrayList()
@@ -59,12 +63,36 @@ class LearnerLanguage : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
+
+        // word searches
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu.findItem(R.id.search).actionView as SearchView).apply {
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            isIconifiedByDefault = false
+        }.setOnQueryTextListener(this)
+
         return true
     }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val intent = Intent(this, MainActivity::class.java)
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        val intent = Intent(this, MainActivity::class.java)
+//        startActivity(intent)
+//        return true
+//    }
+
+    override fun onQueryTextSubmit(search: String?): Boolean {
+        val intent = Intent(this@LearnerLanguage, WordSearchActivity::class.java)
+
+        intent.putExtra(SearchManager.QUERY, search)
+        intent.putExtra("SEARCH_LANG", langCode)
+        intent.setAction(Intent.ACTION_SEARCH)
         startActivity(intent)
+
+        Log.i(TAG, "Starting search of words starting with `${search}'...")
         return true
+    }
+
+    override fun onQueryTextChange(p0: String?): Boolean {
+        return false
     }
 
     // Adapted from Lab7-Firebase
@@ -82,7 +110,7 @@ class LearnerLanguage : AppCompatActivity() {
                         word = postSnapshot.getValue(Word::class.java)
                         postSnapshot.key?.let { wordsId.add(it) }
                     } catch (e: Exception) {
-                        Log.e("LearnerLanguage", e.toString())
+                        Log.e("TAG", e.toString())
                     } finally {
                         words.add(word!!)
                     }
@@ -111,6 +139,10 @@ class LearnerLanguage : AppCompatActivity() {
             }
         })
 
-        Log.d("LearnerLanguage", "Completed Set Title")
+        Log.d("TAG", "Completed Set Title")
+    }
+
+    companion object {
+        const val TAG = "LearnerLanguage"
     }
 }

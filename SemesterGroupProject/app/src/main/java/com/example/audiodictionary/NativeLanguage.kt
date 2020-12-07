@@ -1,5 +1,7 @@
 package com.example.audiodictionary
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,7 +13,7 @@ import android.widget.*
 import com.google.firebase.database.*
 import java.lang.Exception
 
-class NativeLanguage : AppCompatActivity() {
+class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     internal lateinit var mListViewWords: ListView
     internal lateinit var words : MutableList<Word>
@@ -26,6 +28,8 @@ class NativeLanguage : AppCompatActivity() {
     private var mOriginalWordTV: EditText? = null
     private var mAddBtn : Button? = null
 
+    private lateinit var langCode : String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,14 +41,12 @@ class NativeLanguage : AppCompatActivity() {
         val intent = getIntent() as Intent
         val uid = intent.getStringExtra("USER_ID").toString()
         val user = intent.getStringExtra("USERNAME").toString()
-        val langCode = intent.getStringExtra("LANGUAGE").toString()
+        langCode = intent.getStringExtra("LANGUAGE").toString()
 
 
-        mDatabaseLanguage = FirebaseDatabase.getInstance().getReference("Languages").child(
-            intent.getStringExtra("LANGUAGE").toString())
+        mDatabaseLanguage = FirebaseDatabase.getInstance().getReference("Languages").child(langCode)
 
-        mDatabaseWords = FirebaseDatabase.getInstance().getReference("Words").child(
-            intent.getStringExtra("LANGUAGE").toString())
+        mDatabaseWords = FirebaseDatabase.getInstance().getReference("Words").child(langCode)
 
         mTitle = findViewById(R.id.language_learner_title)
         mAddLanguageTitle = findViewById(R.id.native_language_add_lang)
@@ -77,12 +79,36 @@ class NativeLanguage : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
+
+        // word searches
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu.findItem(R.id.search).actionView as SearchView).apply {
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            isIconifiedByDefault = false
+        }.setOnQueryTextListener(this)
+
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+//        val intent = Intent(this, MainActivity::class.java)
+//        startActivity(intent)
         return true
+    }
+
+    override fun onQueryTextSubmit(search: String?): Boolean {
+        val intent = Intent(this@NativeLanguage, WordSearchActivity::class.java)
+
+        intent.putExtra(SearchManager.QUERY, search)
+        intent.putExtra("SEARCH_LANG", langCode)
+        intent.setAction(Intent.ACTION_SEARCH)
+        startActivity(intent)
+
+        Log.i(TAG, "Starting search of words starting with `${search}'...")
+        return true
+    }
+
+    override fun onQueryTextChange(p0: String?): Boolean {
+        return false
     }
 
     // Adapted from Lab7-Firebase

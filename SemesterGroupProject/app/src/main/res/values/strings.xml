@@ -64,4 +64,11 @@
     <string name="audio_list_rate">Rating:\u0020</string>
     <string name="audio_list_play">Play\u0020</string>
 
+    <!-- Search bar -->
+    <string name="search_hint">Search for a word</string>
+    <string name="search_title">Search results</string>
+
+    <!-- Ratings bar; may not need this -->
+    <string name="rate_label">Rate:</string>
+
 </resources>

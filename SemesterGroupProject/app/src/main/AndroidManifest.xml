@@ -53,6 +53,15 @@
             android:name="com.example.audiodictionary.LearnerWordActivity"
             android:label="AudioDictionary">
         </activity>
+        <activity
+            android:name="com.example.audiodictionary.WordSearchActivity"
+            android:label="WordSearchActivity" >
+        android:label="WordSearchActivity"
+        android:launchMode="singleTop" >
+        <intent-filter>
+            <action android:name="android.intent.action.SEARCH" />
+        </intent-filter>
+        </activity>
     </application>
 
 </manifest>
