@@ -27,17 +27,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu, menu)
-        return true
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val intent = Intent(this@MainActivity, MainActivity::class.java)
-//        startActivity(intent)
-        return true
-    }
-
     private fun startLearner() {
         val intent = Intent(this@MainActivity, LanguageListActivity::class.java)
         intent.putExtra("USERNAME", "Learner")

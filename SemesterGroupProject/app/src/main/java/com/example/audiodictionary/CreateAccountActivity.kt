@@ -7,9 +7,12 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -80,12 +83,28 @@ class CreateAccountActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
+        // Hide search on this page
+        menu.findItem(R.id.search).isVisible = false
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        return true
+        when (item.itemId) {
+            R.id.search -> {
+                // Tell user that this page cannot use searching
+                Toast.makeText(this, "Cannot search on this page.", Toast.LENGTH_LONG).show()
+                return false
+            }
+            R.id.exit_option -> {
+                // Exit session button
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
     }
 
     private fun addUser (uid : String, username : String) {

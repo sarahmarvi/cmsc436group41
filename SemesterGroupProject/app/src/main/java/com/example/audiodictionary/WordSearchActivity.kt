@@ -72,13 +72,24 @@ class WordSearchActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
+        // Show search on this page
+
+        menu.findItem(R.id.search).isVisible = true
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        return true
+        when (item.itemId) {
+            R.id.exit_option -> {
+                // Exit session button
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
     }
 
     // This searches using the word and the 2-letter language key
