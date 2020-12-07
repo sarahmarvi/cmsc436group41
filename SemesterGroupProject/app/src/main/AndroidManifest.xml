@@ -39,6 +39,10 @@
                 android:value="com.example.audiodictionary.WordSearchActivity" />
         </activity>
         <activity
+            android:name="com.example.audiodictionary.LearnerWordActivity"
+            android:label="AudioDictionary">
+        </activity>
+        <activity
             android:name="com.example.audiodictionary.NativeLanguage"
             android:windowSoftInputMode="adjustPan"
             android:label="AudioDictionary" >
@@ -57,7 +61,8 @@
         </activity>
         <activity
             android:name="com.example.audiodictionary.WordSearchActivity"
-            android:label="WordSearchActivity" >
+            android:label="WordSearchActivity"
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

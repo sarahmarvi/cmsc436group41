@@ -13,7 +13,7 @@ import android.widget.*
 import com.google.firebase.database.*
 import java.lang.Exception
 
-class NativeLanguage : AppCompatActivity() {
+class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     internal lateinit var mListViewWords: ListView
     internal lateinit var words : MutableList<Word>
@@ -21,6 +21,7 @@ class NativeLanguage : AppCompatActivity() {
     private lateinit var mDatabaseLanguage : DatabaseReference
     private lateinit var mDatabaseWords : DatabaseReference
     internal lateinit var wordsId : MutableList<String>
+    private lateinit var langCode : String
 
     private var mTitle: TextView? = null
     private var mAddLanguageTitle: TextView? = null
@@ -36,16 +37,15 @@ class NativeLanguage : AppCompatActivity() {
         words = ArrayList()
         wordsId = ArrayList()
 
-        val intent = getIntent() as Intent
-        val user = intent.getStringExtra("USERNAME").toString()
-        val langCode = intent.getStringExtra("LANGUAGE").toString()
+        val user = intent.getStringExtra("USERNAME")
+        val langCode = intent.getStringExtra("LANGUAGE")
 
 
         mDatabaseLanguage = FirebaseDatabase.getInstance().getReference("Languages").child(
-            intent.getStringExtra("LANGUAGE").toString())
+            intent.getStringExtra("LANGUAGE")!!)
 
         mDatabaseWords = FirebaseDatabase.getInstance().getReference("Words").child(
-            intent.getStringExtra("LANGUAGE").toString())
+            intent.getStringExtra("LANGUAGE")!!)
 
         mTitle = findViewById(R.id.language_learner_title)
         mAddLanguageTitle = findViewById(R.id.native_language_add_lang)
@@ -61,9 +61,7 @@ class NativeLanguage : AppCompatActivity() {
         mListViewWords.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
             val wordId = wordsId[i]
             val word = words[i]
-
             val clickIntent : Intent = Intent(applicationContext, NativeWordActivity::class.java)
-
 
             clickIntent.putExtra("LANGUAGE", langCode)
             clickIntent.putExtra("WORD_ID", wordId)
@@ -83,7 +81,7 @@ class NativeLanguage : AppCompatActivity() {
         (menu.findItem(R.id.search).actionView as SearchView).apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             isIconifiedByDefault = false
-        }
+        }.setOnQueryTextListener(this)
 
         return true
     }
@@ -91,6 +89,22 @@ class NativeLanguage : AppCompatActivity() {
         //val intent = Intent(this, MainActivity::class.java)
         //startActivity(intent)
         return true
+    }
+
+    override fun onQueryTextSubmit(search: String?): Boolean {
+        val intent = Intent(this@NativeLanguage, WordSearchActivity::class.java)
+
+        intent.putExtra(SearchManager.QUERY, search)
+        intent.putExtra("SEARCH_LANG", langCode)
+        intent.setAction(Intent.ACTION_SEARCH)
+        startActivity(intent)
+
+        Log.i(TAG, "Starting search of words starting with `${search}'...")
+        return true
+    }
+
+    override fun onQueryTextChange(p0: String?): Boolean {
+        return false
     }
 
     // Adapted from Lab7-Firebase

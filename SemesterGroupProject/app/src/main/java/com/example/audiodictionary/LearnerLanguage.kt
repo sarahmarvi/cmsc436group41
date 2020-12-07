@@ -12,7 +12,7 @@ import android.widget.*
 import com.google.firebase.database.*
 import java.lang.Exception
 
-class LearnerLanguage : AppCompatActivity() {
+class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     internal lateinit var mListViewWords: ListView
     internal lateinit var words : MutableList<Word>
@@ -68,24 +68,31 @@ class LearnerLanguage : AppCompatActivity() {
         (menu.findItem(R.id.search).actionView as SearchView).apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             isIconifiedByDefault = false
-        }
+        }.setOnQueryTextListener(this)
 
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         //val intent = Intent(this, MainActivity::class.java)
         //startActivity(intent)
         return true
     }
 
-    override fun onSearchRequested(): Boolean {
-        val appData = Bundle().apply {
-            putString("SEARCH_LANG", langCode)
-        }
-        Log.i(TAG, "Starting search...")
-        startSearch(null, false, appData, false)
+    override fun onQueryTextSubmit(search: String?): Boolean {
+        val intent = Intent(this@LearnerLanguage, WordSearchActivity::class.java)
 
+        intent.putExtra(SearchManager.QUERY, search)
+        intent.putExtra("SEARCH_LANG", langCode)
+        intent.setAction(Intent.ACTION_SEARCH)
+        startActivity(intent)
+
+        Log.i(TAG, "Starting search of words starting with `${search}'...")
         return true
+    }
+
+    override fun onQueryTextChange(p0: String?): Boolean {
+        return false
     }
 
     // Adapted from Lab7-Firebase

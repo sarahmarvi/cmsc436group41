@@ -7,18 +7,45 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import android.widget.AdapterView
+import android.widget.ListView
+import android.widget.TextView
+import com.google.firebase.database.*
+import java.lang.Exception
 
 class WordSearchActivity : AppCompatActivity() {
     private lateinit var mDatabaseWords : DatabaseReference
+    private lateinit var mListViewWords: ListView
+    private lateinit var mTitle: TextView
+    private lateinit var wordsId: MutableList<String>
+    private lateinit var words: MutableList<Word>
+    private lateinit var langCode: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(TAG, "Creating WordSearchActivity!")
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.widget_test)
+        setContentView(R.layout.learner_language)
+        mTitle = findViewById(R.id.language_native_title)
+        mTitle.text = getString(R.string.search_title)
+        mListViewWords = findViewById(R.id.vocabList)
+        mListViewWords.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ ->
+            val wordId = wordsId[i]
+            val word = words[i]
 
-        //mDatabaseWords = FirebaseDatabase.getInstance().getReference("Words")
+            val clickIntent = Intent(applicationContext, LearnerWordActivity::class.java)
+            clickIntent.putExtra("LANGUAGE", langCode)
+            clickIntent.putExtra("WORD_ID", wordId)
+            clickIntent.putExtra("ORIGINAL", word.original)
+            clickIntent.putExtra("TRANSLATION", word.translation)
+            startActivity(clickIntent)
+        }
+
+        // used to check the word searches
+        mDatabaseWords = FirebaseDatabase.getInstance().getReference("Words")
+
+        // hold the words
+        words = ArrayList()
+        wordsId = ArrayList()
 
         // handle search intents
         onSearchIntent(intent)
@@ -35,7 +62,9 @@ class WordSearchActivity : AppCompatActivity() {
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
                 //doMySearch(query)
-                searchWord(query, "fr") // for testing I've hardcoded this
+                langCode = intent.getStringExtra("SEARCH_LANG")!!
+                Log.i(TAG, "Received language code: $langCode")
+                searchWord(query, langCode)
             }
         }
     }
@@ -52,21 +81,35 @@ class WordSearchActivity : AppCompatActivity() {
         return true
     }
 
-    // We need to search by recording ID and user ID, so those are the keys
-    // We also need the rating from the listener above, and we need the username for the view
-    /*fun sendRating(recordingID: String, uid: String, username: String, rating: Float) {
-        val rating = Rating(username, rating)
-        // if the user has an existing rating, this will replace it
-        // thanks to the way the tree is structured
-        mDatabaseRatings.child(recordingID).child(uid).setValue(rating)
-        Log.i(TAG, "User $username has given <Recording: $recordingID> a $rating")
-    }*/
-
     // This searches using the word and the 2-letter language key
     private fun searchWord(word: String, language: String) {
-        //val words = mDatabaseWords.child(language)
-        //Log.i(TAG, "The words retrieved from $language: $words")
-        Log.i(TAG, "The words retrieved from $language")
+        val wordQuery = mDatabaseWords.child(language).orderByChild("original").startAt(word).endAt(word + "uf8ff")
+        Log.i(TAG, "Seeing which words start with `$word'...")
+        wordQuery.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var wordResult: Word? = null
+                for (postSnapshot in dataSnapshot.children) {
+                    try {
+                        wordResult = postSnapshot.getValue(Word::class.java)
+                        postSnapshot.key?.let {
+                            Log.i(TAG, "Obtained word ${wordResult!!}!")
+                            wordsId.add(postSnapshot.key!!)
+                            words.add(wordResult)
+                        }
+                    } catch (e: Exception) {
+                        Log.e(NativeLanguage.TAG, e.toString())
+                    }
+                }
+                val wordListAdapter = WordList(this@WordSearchActivity, words)
+                mListViewWords.adapter = wordListAdapter
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // do nothing
+            }
+        })
+        Log.i(TAG, "The words retrieved from $language: $words")
+        //Log.i(TAG, "The words retrieved from $language")
     }
 
     companion object {
