@@ -64,7 +64,7 @@ class LearnerWordActivity : AppCompatActivity() {
                 recordings.clear()
 
                 var record : Recording? = null
-                for (postSnapshot in dataSnapshot.child(wordId).children) {
+                for (postSnapshot in dataSnapshot.children) {
                     try {
                         record = postSnapshot.getValue(Recording::class.java)
                         postSnapshot.key?.let { recordingIds.add(it) }
@@ -74,6 +74,9 @@ class LearnerWordActivity : AppCompatActivity() {
                         recordings.add(record!!)
                     }
                 }
+                // TODO - Get Ratings and add them to adapter
+//        val recordingListAdapter = RecordingList(this@LearnerWordActivity, recordings)
+//        mListViewRecordings.adapter = recordingListAdapter
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -81,9 +84,7 @@ class LearnerWordActivity : AppCompatActivity() {
             }
         })
 
-        // TODO - Get Ratings and add them to adapter
-//        val recordingListAdapter = RecordingList(this@LearnerWordActivity, recordings)
-//        mListViewRecordings.adapter = recordingListAdapter
+
     }
 
 }

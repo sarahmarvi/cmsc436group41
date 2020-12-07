@@ -55,7 +55,7 @@ class NativeWordActivity : AppCompatActivity() {
 
 
         mTitle = findViewById(R.id.native_word_title)
-        mTitle!!.text = wdTranslation
+        mTitle!!.text = wdOriginal
 
         mListViewRecordings = findViewById(R.id.native_record_rate_list)
 
@@ -82,7 +82,7 @@ class NativeWordActivity : AppCompatActivity() {
                 recordings.clear()
 
                 var record : Recording? = null
-                for (postSnapshot in dataSnapshot.child(wordId).children) {
+                for (postSnapshot in dataSnapshot.children) {
                     try {
                         record = postSnapshot.getValue(Recording::class.java)
                         postSnapshot.key?.let { recordingIds.add(it) }
@@ -92,35 +92,14 @@ class NativeWordActivity : AppCompatActivity() {
                         recordings.add(record!!)
                     }
                 }
+                // TODO - Get Ratings and add them to adapter
+                val recordingListAdapter = RecordingList(this@NativeWordActivity, recordings)
+                mListViewRecordings.adapter = recordingListAdapter
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // do nothing
             }
         })
-
-        // TODO - Get Ratings and add them to adapter
-        val recordingListAdapter = RecordingList(this@NativeWordActivity, recordings)
-        mListViewRecordings.adapter = recordingListAdapter
     }
-
-//    private fun playAudio() {
-//        val player = MediaPlayer()
-//
-//        // TODO - Figure out how to get URL from Firebase
-//        player.setDataSource("")
-//
-//        try {
-//            player.setOnPreparedListener(MediaPlayer.OnPreparedListener {
-//
-//                override fun onPrepared(mp : MediaPlayer) {
-//                    mp.start()
-//                }
-//            })
-//            player.prepare()
-//        } catch (e: Exception) {
-//            Log.e("NativeWordActivity", e.toString())
-//        }
-//
-//    }
 }
