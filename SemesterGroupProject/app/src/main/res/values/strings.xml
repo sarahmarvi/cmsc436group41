@@ -8,6 +8,7 @@
     <string name="welcome_question">Who are you?</string>
     <string name="welcome_learner">\u0020\u0020Learner\u0020\u0020</string>
     <string name="welcome_Native">\u0020\u0020\u0020Native\u0020\u0020\u0020</string>
+    <string name="welcome_logo_descr">audiodictionarylogo</string>
 
 <!--    Strings for languages.xml-->
     <string name="languages_title">Languages</string>
