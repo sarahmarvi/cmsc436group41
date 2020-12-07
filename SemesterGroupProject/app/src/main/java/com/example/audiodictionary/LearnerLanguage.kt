@@ -29,7 +29,12 @@ class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.learner_language)
 
+<<<<<<< HEAD
         langCode = intent.getStringExtra("LANGUAGE").toString()
+=======
+        val user = intent.getStringExtra("USERNAME")!!
+        langCode = intent.getStringExtra("LANGUAGE")!!
+>>>>>>> main
 
         words = ArrayList()
         wordsId = ArrayList()
@@ -107,7 +112,7 @@ class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
                         word = postSnapshot.getValue(Word::class.java)
                         postSnapshot.key?.let { wordsId.add(it) }
                     } catch (e: Exception) {
-                        Log.e("TAG", e.toString())
+                        Log.e(TAG, e.toString())
                     } finally {
                         words.add(word!!)
                     }
@@ -136,7 +141,7 @@ class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
             }
         })
 
-        Log.d("TAG", "Completed Set Title")
+        Log.d(TAG, "Completed Set Title")
     }
 
     companion object {
