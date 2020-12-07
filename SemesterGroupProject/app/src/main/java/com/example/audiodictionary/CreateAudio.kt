@@ -27,6 +27,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.ImageView
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -41,9 +42,10 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
     private val mAudioPerm = Manifest.permission.RECORD_AUDIO
     private val mFileWritePerm = Manifest.permission.WRITE_EXTERNAL_STORAGE
 
-    private lateinit var startRecordingBtn: Button
+    private lateinit var startRecordingBtn: ImageView
     private lateinit var playRecordingBtn: Button
     private lateinit var submitBtn: Button
+    private lateinit var ringView: ImageView
 
     private var mCanRecord : Boolean = false
     private var mHasStartedR: Boolean = false
@@ -83,9 +85,12 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
 
         mStorage = FirebaseStorage.getInstance().reference
 
-        startRecordingBtn = findViewById(R.id.button3)
+        startRecordingBtn = findViewById(R.id.imageView_mic)
         playRecordingBtn = findViewById(R.id.button5)
         submitBtn = findViewById(R.id.button4)
+        ringView = findViewById(R.id.imageView_ring)
+
+        ringView.visibility = View.GONE
 
         // Check for the audio and write permissions
         if (PackageManager.PERMISSION_GRANTED == checkSelfPermission(mAudioPerm) &&
@@ -122,6 +127,7 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
                         try {
                             mediaRecorder?.prepare()
                             Toast.makeText(applicationContext, "Recording Started", Toast.LENGTH_LONG).show()
+                            ringView.visibility = View.VISIBLE
                             mediaRecorder?.start()
                         } catch (exception : IOException) {
                             Log.i(TAG,"Failed to prepare and start recording")
@@ -132,6 +138,7 @@ class CreateAudio : Activity(), AudioManager.OnAudioFocusChangeListener {
                     mHasStartedR = false
                     mediaRecorder?.stop()
                     mediaRecorder?.release()
+                    ringView.visibility = View.GONE
                     mediaRecorder = null
                     mHasOneRecording = true
                 }
