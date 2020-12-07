@@ -149,6 +149,7 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
+    // Gets username of user who has logged on to send in intent
     private fun getUsername(id : String) : String {
         var index = -1
         for ( i in 0 until userID.size) {

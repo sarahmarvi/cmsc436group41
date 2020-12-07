@@ -49,6 +49,7 @@ class CreateAccountActivity : AppCompatActivity() {
         val password: String = passwordTV!!.text.toString()
         val username: String = usernameTV!!.text.toString()
 
+        // Checks for empty text fields that will error registration/adding a user to the database
         if (!validator.validEmail(email)) {
             Toast.makeText(applicationContext, "Please enter a valid email...", Toast.LENGTH_LONG).show()
             return
@@ -107,6 +108,7 @@ class CreateAccountActivity : AppCompatActivity() {
         }
     }
 
+    // Adds a user to the database on successful registration of account
     private fun addUser (uid : String, username : String) {
 
         if (!TextUtils.isEmpty(username)) {

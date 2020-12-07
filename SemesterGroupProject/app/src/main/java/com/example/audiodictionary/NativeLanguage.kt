@@ -170,6 +170,7 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
         })
     }
 
+    // Adds the new word that the user created to the database
     private fun addNewWord() {
 
         val englishTranslation = mEnglishTranslationTV!!.text.toString()

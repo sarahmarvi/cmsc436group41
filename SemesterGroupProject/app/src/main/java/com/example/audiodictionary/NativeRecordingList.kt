@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 
+// Adapted from Lab7-Firebase for populating the list view of NativeWordActivity
 class NativeRecordingList(
     private val context: Activity,
     private var recordings: List<Recording>,
@@ -60,6 +61,8 @@ class NativeRecordingList(
         }
     }
 
+    // Stores the user's rating for the recording in the database. Everytime the user changes their
+    // rating it gets updated here as well
     private fun sendRating(recordingID: String, uid: String, ratings: Float) {
         val rating = Ratings(ratings)
         val mDatabaseRatings = FirebaseDatabase.getInstance().getReference("RecordingList")
@@ -68,6 +71,7 @@ class NativeRecordingList(
         Log.i(TAG, "User has given <Recording: $recordingID> a $rating")
     }
 
+    // Gets the most current rating of the user for the selected recording
     private fun getRating (recordingID : String, snapshot: DataSnapshot, uid : String) {
         val rating = snapshot.child("Ratings").child(recordingID).child(uid).getValue(Ratings::class.java)
 

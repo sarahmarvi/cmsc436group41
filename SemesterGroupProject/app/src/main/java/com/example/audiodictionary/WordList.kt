@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 
-// Adapted from Lab7-Firebase
+// Adapted from Lab7-Firebase for populating the list view in NativeLanguage and LearnerLanguage
 class WordList (private val context: Activity, private var words: List<Word>) : ArrayAdapter<Word>(context,
     R.layout.vocab_list, words) {
 

@@ -229,6 +229,8 @@ class CreateAudio : AppCompatActivity(), AudioManager.OnAudioFocusChangeListener
         }
     }
 
+    // Uploads the recording to Firebase Storage as well as calls function to add path of
+    // stored file to Firebase Database
     private fun upload() {
         val uri = Uri.fromFile(File(fileName))
         val fileRef = mStorage.child(wordID + "/" + uri.lastPathSegment!!)
@@ -267,6 +269,7 @@ class CreateAudio : AppCompatActivity(), AudioManager.OnAudioFocusChangeListener
         }
     }
 
+    // Saves the path to the audio file to the database for future use
     private fun addToDatabase(uri: Uri) {
         val id = mDatabaseRecordings.child(wordID).push().key
         val record = Recording(wordID + "/" + uri.lastPathSegment.toString(), username, uid)

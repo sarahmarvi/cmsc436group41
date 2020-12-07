@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 
+// Adapted from Lab7-Firebase to populate the list view in LearnerWordActivity
 class LearnerRecordingList(
     private val context: Activity,
     private var recordings: List<Recording>,
