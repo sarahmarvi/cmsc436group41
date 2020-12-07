@@ -29,12 +29,7 @@ class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.learner_language)
 
-<<<<<<< HEAD
-        langCode = intent.getStringExtra("LANGUAGE").toString()
-=======
-        val user = intent.getStringExtra("USERNAME")!!
         langCode = intent.getStringExtra("LANGUAGE")!!
->>>>>>> main
 
         words = ArrayList()
         wordsId = ArrayList()
