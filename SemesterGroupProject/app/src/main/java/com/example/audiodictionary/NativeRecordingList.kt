@@ -65,15 +65,15 @@ class NativeRecordingList(
     // rating it gets updated here as well
     private fun sendRating(recordingID: String, uid: String, ratings: Float) {
         val rating = Ratings(ratings)
-        val mDatabaseRatings = FirebaseDatabase.getInstance().getReference("RecordingList")
+        val mDatabaseRatings = FirebaseDatabase.getInstance().getReference(RECORDING_LIST_TEXT)
 
-        mDatabaseRatings.child("Ratings").child(recordingID).child(uid).setValue(rating)
+        mDatabaseRatings.child(RATINGS_TEXT).child(recordingID).child(uid).setValue(rating)
         Log.i(TAG, "User has given <Recording: $recordingID> a $rating")
     }
 
     // Gets the most current rating of the user for the selected recording
     private fun getRating (recordingID : String, snapshot: DataSnapshot, uid : String) {
-        val rating = snapshot.child("Ratings").child(recordingID).child(uid).getValue(Ratings::class.java)
+        val rating = snapshot.child(RATINGS_TEXT).child(recordingID).child(uid).getValue(Ratings::class.java)
 
         if (rating != null) {
             ratingBar.rating = rating.rating
@@ -82,5 +82,7 @@ class NativeRecordingList(
 
     companion object {
         const val TAG = "RecordingList"
+        const val RATINGS_TEXT = "Ratings"
+        const val RECORDING_LIST_TEXT = "RecordingList"
     }
 }

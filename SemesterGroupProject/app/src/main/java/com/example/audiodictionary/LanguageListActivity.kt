@@ -1,5 +1,6 @@
 package com.example.audiodictionary
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,8 @@ import android.widget.Toast
 import com.google.firebase.database.*
 import java.lang.Exception
 
+// This class serves to populate the list of languages for languages.xml
+
 class LanguageListActivity : AppCompatActivity() {
 
     private lateinit var mGreetingTextView: TextView
@@ -22,6 +25,7 @@ class LanguageListActivity : AppCompatActivity() {
     internal lateinit var languages : MutableList<Language>
     internal lateinit var languageCodes : MutableList<String>
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.languages)
@@ -29,28 +33,28 @@ class LanguageListActivity : AppCompatActivity() {
         languages = ArrayList()
         languageCodes = ArrayList()
 
-        val uid = intent.getStringExtra("USER_ID").toString()
-        val user = intent.getStringExtra("USERNAME").toString()
+        val uid = intent.getStringExtra(USER_ID_KEY).toString()
+        val user = intent.getStringExtra(USERNAME_KEY).toString()
 
         mListViewLanguages = findViewById(R.id.language_list)
         mGreetingTextView = findViewById(R.id.languages_greeting)
-        mGreetingTextView.text = "Welcome, $user"
+        mGreetingTextView.text = WELCOME_TEXT + user
 
-        mDatabaseLanguage =  FirebaseDatabase.getInstance().getReference("Languages")
+        mDatabaseLanguage =  FirebaseDatabase.getInstance().getReference(LANGUAGES_TEXT)
 
         mListViewLanguages.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
 
             val langCode = languageCodes[i]
 
-            val clickIntent : Intent = if (user == "Learner") {
+            val clickIntent : Intent = if (user == LEARNER_NAME) {
                 Intent(applicationContext, LearnerLanguage::class.java)
             } else {
                 Intent(applicationContext, NativeLanguage::class.java)
-                .putExtra("USER_ID", uid)
+                .putExtra(USER_ID_KEY, uid)
             }
 
-            clickIntent.putExtra("LANGUAGE", langCode)
-            clickIntent.putExtra("USERNAME", user)
+            clickIntent.putExtra(LANGUAGE_KEY, langCode)
+            clickIntent.putExtra(USERNAME_KEY, user)
 
             startActivity(clickIntent)
         }
@@ -85,7 +89,7 @@ class LanguageListActivity : AppCompatActivity() {
         }
     }
 
-    // Adapted from Lab7-Firebase
+    // Adapted from Lab7-Firebase for getting the languages
     override fun onStart() {
         super.onStart()
 
@@ -100,7 +104,7 @@ class LanguageListActivity : AppCompatActivity() {
                         language = postSnapshot.getValue(Language::class.java)
                         postSnapshot.key?.let { languageCodes.add(it) }
                     } catch (e: Exception) {
-                        Log.e("LanguageListActivity", e.toString())
+                        Log.e(TAG, e.toString())
                     } finally {
                         languages.add(language!!)
                     }
@@ -123,5 +127,15 @@ class LanguageListActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    companion object {
+        const val TAG = "LanguageListActivity"
+        const val LANGUAGE_KEY = "LANGUAGE"
+        const val USER_ID_KEY = "USER_ID"
+        const val USERNAME_KEY = "USERNAME"
+        const val LEARNER_NAME = "Learner"
+        const val LANGUAGES_TEXT = "Languages"
+        const val WELCOME_TEXT = "Welcome, "
+
+    }
 
 }

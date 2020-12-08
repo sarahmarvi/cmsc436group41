@@ -25,8 +25,8 @@ class Validators {
             return false
         }
 
-        // Min 4 char, Max 8 char 1 letter, 1 number
-        val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{4,8}\$")
+        // This password needs 4-12 characters with at least 1 number and 1 letter
+        val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{4,12}\$")
         return passwordRegex.matches(password)
 
     }

@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 
+// This class is for the welcome screen, in which a user selects the choice to continue as a learner or
+// a native speaker.
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var learnerButton: Button
@@ -27,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startLearner() {
         val intent = Intent(this@MainActivity, LanguageListActivity::class.java)
-        intent.putExtra("USERNAME", "Learner")
+        intent.putExtra(USERNAME_KEY, LEARNER_TEXT)
         startActivity(intent)
     }
 
@@ -41,4 +44,10 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         this.finishAffinity()
     }
+
+    companion object {
+        const val USERNAME_KEY = "USERNAME"
+        const val LEARNER_TEXT = "Learner"
+    }
+
 }

@@ -27,6 +27,9 @@ import java.io.IOException
 // To write this class, there was reliance on developer.android.com and Dr. Porter's class example
 // of AudioVideoAudioRecording
 
+// This class was a complicated to implement and less familiar than the labs done in class, and it has
+// been commented more extensively to better explain it.
+
 class CreateAudio : AppCompatActivity(), AudioManager.OnAudioFocusChangeListener {
 
 
@@ -294,7 +297,7 @@ class CreateAudio : AppCompatActivity(), AudioManager.OnAudioFocusChangeListener
            addToDatabase(uri)
 
        } catch (e : Exception) {
-           Log.e("CreateAudio", e.toString())
+           Log.e(TAG, e.toString())
        }
     }
 

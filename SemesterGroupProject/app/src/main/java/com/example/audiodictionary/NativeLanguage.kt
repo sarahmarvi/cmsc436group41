@@ -13,6 +13,9 @@ import android.widget.*
 import com.google.firebase.database.*
 import java.lang.Exception
 
+// This class is responsible for populating the layout seen by a native, which involves getting
+// the words from firebase, and more detailed below.
+
 class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     internal lateinit var mListViewWords: ListView
@@ -38,14 +41,14 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
         words = ArrayList()
         wordsId = ArrayList()
 
-        val uid = intent.getStringExtra("USER_ID").toString()
-        val user = intent.getStringExtra("USERNAME").toString()
-        langCode = intent.getStringExtra("LANGUAGE").toString()
+        val uid = intent.getStringExtra(USER_ID_KEY).toString()
+        val user = intent.getStringExtra(USERNAME_KEY).toString()
+        langCode = intent.getStringExtra(LANGUAGE_KEY).toString()
 
 
-        mDatabaseLanguage = FirebaseDatabase.getInstance().getReference("Languages").child(langCode)
+        mDatabaseLanguage = FirebaseDatabase.getInstance().getReference(LANGUAGE_TEXT).child(langCode)
 
-        mDatabaseWords = FirebaseDatabase.getInstance().getReference("Words").child(langCode)
+        mDatabaseWords = FirebaseDatabase.getInstance().getReference(WORDS_TEXT).child(langCode)
 
         mTitle = findViewById(R.id.language_learner_title)
         mAddLanguageTitle = findViewById(R.id.native_language_add_lang)
@@ -64,12 +67,12 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
 
             val clickIntent = Intent(applicationContext, NativeWordActivity::class.java)
 
-            clickIntent.putExtra("USERNAME", user)
-            clickIntent.putExtra("USER_ID", uid)
-            clickIntent.putExtra("LANGUAGE", langCode)
-            clickIntent.putExtra("WORD_ID", wordId)
-            clickIntent.putExtra("ORIGINAL", word.original)
-            clickIntent.putExtra("TRANSLATION", word.translation)
+            clickIntent.putExtra(USERNAME_KEY, user)
+            clickIntent.putExtra(USER_ID_KEY, uid)
+            clickIntent.putExtra(LANGUAGE_KEY, langCode)
+            clickIntent.putExtra(WORD_ID_KEY, wordId)
+            clickIntent.putExtra(ORIGINAL_KEY, word.original)
+            clickIntent.putExtra(TRANSLATION_KEY, word.translation)
             startActivity(clickIntent)
         }
 
@@ -110,7 +113,7 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
         val intent = Intent(this@NativeLanguage, WordSearchActivity::class.java)
 
         intent.putExtra(SearchManager.QUERY, search)
-        intent.putExtra("SEARCH_LANG", langCode)
+        intent.putExtra(SEARCH_LANG_KEY, langCode)
         intent.action = Intent.ACTION_SEARCH
         startActivity(intent)
 
@@ -207,5 +210,14 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     companion object {
         const val TAG = "NativeLanguage"
+        const val USERNAME_KEY = "USERNAME"
+        const val USER_ID_KEY = "USER_ID"
+        const val LANGUAGE_KEY = "LANGUAGE"
+        const val WORD_ID_KEY = "WORD_ID"
+        const val ORIGINAL_KEY = "ORIGINAL"
+        const val TRANSLATION_KEY = "TRANSLATION"
+        const val LANGUAGE_TEXT = "Languages"
+        const val WORDS_TEXT = "Words"
+        const val SEARCH_LANG_KEY = "SEARCH_LANG"
     }
 }

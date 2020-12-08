@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import java.lang.Exception
 
+// This class is to populate the layout native_word_details, in which a native is to see a word
+// with all the audios and ratings listed below, and that they can add ratings to.
+
 class NativeWordActivity : AppCompatActivity() {
 
     internal lateinit var mListViewRecordings: ListView
@@ -38,14 +41,14 @@ class NativeWordActivity : AppCompatActivity() {
         recordingIds = ArrayList()
         ratings = ArrayList()
 
-        user = intent.getStringExtra("USERNAME")!!
-        uid = intent.getStringExtra("USER_ID")!!
-        langCode = intent.getStringExtra("LANGUAGE")!!
-        wordId = intent.getStringExtra("WORD_ID")!!
-        wdOriginal = intent.getStringExtra("ORIGINAL")!!
-        wdTranslation = intent.getStringExtra("TRANSLATION")!!
+        user = intent.getStringExtra(USERNAME_KEY)!!
+        uid = intent.getStringExtra(USER_ID_KEY)!!
+        langCode = intent.getStringExtra(LANGUAGE_KEY)!!
+        wordId = intent.getStringExtra(WORD_ID_KEY)!!
+        wdOriginal = intent.getStringExtra(ORIGINAL_KEY)!!
+        wdTranslation = intent.getStringExtra(TRANSLATION_KEY)!!
 
-        mDatabaseRecordings = FirebaseDatabase.getInstance().getReference("RecordingList")
+        mDatabaseRecordings = FirebaseDatabase.getInstance().getReference(RECORDING_LIST_TEXT)
 
 
         mTitle = findViewById(R.id.native_word_title)
@@ -59,9 +62,9 @@ class NativeWordActivity : AppCompatActivity() {
 
             val clickIntent = Intent(this@NativeWordActivity, CreateAudio::class.java)
 
-            clickIntent.putExtra("WORD_ID", wordId)
-            clickIntent.putExtra("USERNAME", user)
-            clickIntent.putExtra("USER_ID", uid)
+            clickIntent.putExtra(WORD_ID_KEY, wordId)
+            clickIntent.putExtra(USERNAME_KEY, user)
+            clickIntent.putExtra(USER_ID_KEY, uid)
 
             startActivity(clickIntent)
         }
@@ -82,7 +85,7 @@ class NativeWordActivity : AppCompatActivity() {
                         record = postSnapshot.getValue(Recording::class.java)
                         postSnapshot.key?.let { recordingIds.add(it) }
                     } catch (e: Exception) {
-                        Log.e("LearnerLanguage", e.toString())
+                        Log.e(TAG, e.toString())
                     } finally {
                         recordings.add(record!!)
                     }
@@ -96,6 +99,17 @@ class NativeWordActivity : AppCompatActivity() {
                 // do nothing
             }
         })
+    }
+
+    companion object {
+        const val TAG = "NativeWordActivity"
+        const val USERNAME_KEY = "USERNAME"
+        const val USER_ID_KEY = "USER_ID"
+        const val LANGUAGE_KEY = "LANGUAGE"
+        const val WORD_ID_KEY = "WORD_ID"
+        const val ORIGINAL_KEY = "ORIGINAL"
+        const val TRANSLATION_KEY = "TRANSLATION"
+        const val RECORDING_LIST_TEXT = "RecordingList"
     }
 
 

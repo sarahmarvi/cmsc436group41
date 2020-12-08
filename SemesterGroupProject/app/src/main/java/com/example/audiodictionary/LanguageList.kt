@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 
-// Adapted from Lab7-Firebase to populate the list adapter in LanguageList Activity
+// Adapted from Lab5-LifecycleAware, Lab7-Firebase to populate the list adapter in LanguageList Activity
 class LanguageList (private val context: Activity, private var languages: List<Language>) : ArrayAdapter<Language>(context,
     R.layout.specified_language, languages) {
 
