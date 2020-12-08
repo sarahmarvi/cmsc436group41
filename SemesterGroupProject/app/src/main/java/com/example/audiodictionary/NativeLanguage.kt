@@ -93,15 +93,15 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.exit_option -> {
                 // Exit session button
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
-                return true
+                true
             }
             else -> {
-                return super.onOptionsItemSelected(item)
+                super.onOptionsItemSelected(item)
             }
         }
     }
