@@ -81,7 +81,7 @@ class WordSearchActivity : AppCompatActivity() {
         return true
     }
 
-    // for exiting to welcome from an option of the menu
+    // for exiting to welcome from an option of the menu.
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.exit_option -> {
