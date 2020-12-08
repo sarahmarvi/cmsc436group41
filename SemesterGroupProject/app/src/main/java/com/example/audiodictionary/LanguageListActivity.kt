@@ -56,6 +56,7 @@ class LanguageListActivity : AppCompatActivity() {
         }
     }
 
+    // used to create the menu options
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
@@ -64,6 +65,7 @@ class LanguageListActivity : AppCompatActivity() {
         return true
     }
 
+    // Allows a user to search for a word and exit/sign out to welcome screen using the option menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.search -> {
