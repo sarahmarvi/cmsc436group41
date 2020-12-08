@@ -15,6 +15,9 @@ import com.google.firebase.database.*
 import java.lang.Exception
 
 /* Class is adapted from Lab7-Firebase */
+// This class is for implementing the layout for login, where users are logged in through firebase
+// authentication.
+
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var mDatabaseUser: DatabaseReference
@@ -80,8 +83,8 @@ class LoginActivity : AppCompatActivity() {
                     val name = getUsername(uid)
 
                     val intent = Intent(this@LoginActivity, LanguageListActivity::class.java)
-                    intent.putExtra("USER_ID", uid)
-                    intent.putExtra("USERNAME", name)
+                    intent.putExtra(USER_ID_KEY, uid)
+                    intent.putExtra(USERNAME_KEY, name)
                     startActivity(intent)
                 } else {
                     Toast.makeText(
@@ -135,7 +138,7 @@ class LoginActivity : AppCompatActivity() {
                         user = postSnapshot.getValue(User::class.java)
                         postSnapshot.key?.let { userID.add(it) }
                     } catch (e: Exception) {
-                        Log.e("LanguageListActivity", e.toString())
+                        Log.e(TAG, e.toString())
                     } finally {
                         users.add(user!!)
                     }
@@ -172,8 +175,10 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
-  
+
     companion object {
         const val TAG = "LoginActivity"
+        const val USER_ID_KEY = "USER_ID"
+        const val USERNAME_KEY = "USERNAME"
     }
 }

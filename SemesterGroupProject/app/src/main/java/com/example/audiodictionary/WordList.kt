@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 
-// Adapted from Lab7-Firebase for populating the list view in NativeLanguage and LearnerLanguage
+// This class helps populate the list of words where a list of words is taken into WordList and
+// the listView is filled with them.
+
+// Adapted from Lab7-Firebase, Lab5 for populating the list view in NativeLanguage and LearnerLanguage
 class WordList (private val context: Activity, private var words: List<Word>) : ArrayAdapter<Word>(context,
     R.layout.vocab_list, words) {
 

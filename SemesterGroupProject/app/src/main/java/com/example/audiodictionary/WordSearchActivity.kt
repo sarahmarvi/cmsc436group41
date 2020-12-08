@@ -13,6 +13,8 @@ import android.widget.TextView
 import com.google.firebase.database.*
 import java.lang.Exception
 
+// This class is for searching for a word in the audio dictionary from the list of words in firebase.
+
 class WordSearchActivity : AppCompatActivity() {
     private lateinit var mDatabaseWords : DatabaseReference
     private lateinit var mListViewWords: ListView
@@ -33,10 +35,10 @@ class WordSearchActivity : AppCompatActivity() {
             val word = words[i]
 
             val clickIntent = Intent(applicationContext, LearnerWordActivity::class.java)
-            clickIntent.putExtra("LANGUAGE", langCode)
-            clickIntent.putExtra("WORD_ID", wordId)
-            clickIntent.putExtra("ORIGINAL", word.original)
-            clickIntent.putExtra("TRANSLATION", word.translation)
+            clickIntent.putExtra(LANGUAGE_KEY, langCode)
+            clickIntent.putExtra(WORD_ID_KEY, wordId)
+            clickIntent.putExtra(ORIGINAL_KEY, word.original)
+            clickIntent.putExtra(TRANSLATION_KEY, word.translation)
             startActivity(clickIntent)
         }
 
@@ -62,13 +64,14 @@ class WordSearchActivity : AppCompatActivity() {
         // Built off example code from Android docs: https://developer.android.com/guide/topics/search/search-dialog#ReceivingTheQuery
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
-                langCode = intent.getStringExtra("SEARCH_LANG")!!
+                langCode = intent.getStringExtra(SEARCH_LANG_KEY)!!
                 Log.i(TAG, "Received language code: $langCode")
                 searchWord(query, langCode)
             }
         }
     }
 
+    // To create a menu to exit
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
@@ -78,6 +81,7 @@ class WordSearchActivity : AppCompatActivity() {
         return true
     }
 
+    // for exiting to welcome from an option of the menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.exit_option -> {
@@ -122,8 +126,12 @@ class WordSearchActivity : AppCompatActivity() {
         })
     }
 
-
     companion object {
         const val TAG = "WordSearchActivity"
+        const val SEARCH_LANG_KEY = "SEARCH_LANG"
+        const val LANGUAGE_KEY = "LANGUAGE"
+        const val WORD_ID_KEY = "WORD_ID"
+        const val ORIGINAL_KEY = "ORIGINAL"
+        const val TRANSLATION_KEY = "TRANSLATION"
     }
 }

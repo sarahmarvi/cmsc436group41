@@ -12,6 +12,9 @@ import android.widget.*
 import com.google.firebase.database.*
 import java.lang.Exception
 
+// This class is responsible for populating the layout seen by a learner, which involves getting
+// the words from firebase, and more detailed below.
+
 class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     internal lateinit var mListViewWords: ListView
@@ -49,14 +52,17 @@ class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
             val clickIntent = Intent(applicationContext, LearnerWordActivity::class.java)
 
 
-            clickIntent.putExtra("LANGUAGE", langCode)
-            clickIntent.putExtra("WORD_ID", wordId)
-            clickIntent.putExtra("ORIGINAL", word.original)
-            clickIntent.putExtra("TRANSLATION", word.translation)
+            clickIntent.putExtra(LANGUAGE_KEY, langCode)
+            clickIntent.putExtra(WORD_ID_KEY, wordId)
+            clickIntent.putExtra(ORIGINAL_KEY, word.original)
+            clickIntent.putExtra(TRANSLATION_KEY, word.translation)
             startActivity(clickIntent)
         }
     }
 
+
+
+    // For creating the option menu at the top, involving searching and exiting
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
@@ -74,6 +80,7 @@ class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
         return true
     }
 
+    // For the functionality behind the option menu.
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.exit_option -> {
@@ -88,6 +95,7 @@ class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
         }
     }
 
+    // For the searching of words
     override fun onQueryTextSubmit(search: String?): Boolean {
         val intent = Intent(this@LearnerLanguage, WordSearchActivity::class.java)
 
@@ -135,6 +143,7 @@ class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
         })
     }
 
+    // To fill the placeholder name at the top.
     private fun setTitle() {
         mDatabaseLanguage.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot : DataSnapshot) {
@@ -160,5 +169,9 @@ class LearnerLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     companion object {
         const val TAG = "LearnerLanguage"
+        const val LANGUAGE_KEY = "LANGUAGE"
+        const val WORD_ID_KEY = "WORD_ID"
+        const val ORIGINAL_KEY = "ORIGINAL"
+        const val TRANSLATION_KEY = "TRANSLATION"
     }
 }

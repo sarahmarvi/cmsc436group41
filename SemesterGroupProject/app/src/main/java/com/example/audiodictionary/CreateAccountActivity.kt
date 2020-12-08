@@ -70,7 +70,7 @@ class CreateAccountActivity : AppCompatActivity() {
 
                     val intent = Intent(this@CreateAccountActivity, LoginActivity::class.java)
 
-                    Log.i("CreateAccountActivity", "Sending Intent to LoginActivity")
+                    Log.i(TAG, "Sending Intent to LoginActivity")
                     startActivity(intent)
                 } else {
                     Toast.makeText(applicationContext, "Registration failed! Please try again later", Toast.LENGTH_LONG).show()
@@ -114,7 +114,7 @@ class CreateAccountActivity : AppCompatActivity() {
             val user = User(username, "")
             databaseUser.child(uid).setValue(user)
 
-            Log.i("CreateAccountActivity", "Added username to database")
+            Log.i(TAG, "Added username to database")
         }
 
     }
@@ -124,6 +124,10 @@ class CreateAccountActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+    }
+
+    companion object {
+        const val TAG = "CreateAccountActivity"
     }
 
 }

@@ -14,6 +14,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.storage.FirebaseStorage
 
 // Adapted from Lab7-Firebase to populate the list view in LearnerWordActivity
+
+// This class is for populating the component of the audio list under a particular word that has
+// been selected. The component includes the user who uploaded the audio, the ratings of the audio,
+// and the audio to be played itself.
+
 class LearnerRecordingList(
     private val context: Activity,
     private var recordings: List<Recording>,
@@ -48,6 +53,7 @@ class LearnerRecordingList(
         return listViewItem
     }
 
+    // For playing the audio from firebase
     private fun playAudio(record : Recording) {
         val storage = FirebaseStorage.getInstance()
 
@@ -61,11 +67,12 @@ class LearnerRecordingList(
         }
     }
 
+    // For getting the rating from firebase to be put into the respective audio sample in the list
     private fun getRating(recordingID: String, snapshot: DataSnapshot) {
         var ratingNum = 0f
         var counter = 0f
         var user : Ratings?
-        val snapshotChildren = snapshot.child("Ratings").child(recordingID).children
+        val snapshotChildren = snapshot.child(RATINGS_TEXT).child(recordingID).children
 
         for (postSnapshot in snapshotChildren) {
             user = postSnapshot.getValue(Ratings::class.java)
@@ -79,7 +86,12 @@ class LearnerRecordingList(
         }
 
         ratingBar.rating = (ratingNum/counter)
-        Log.i("LearnerRecordingList", "Counter = $counter Ratingnum = $ratingNum")
+        Log.i(TAG, "Counter = $counter Ratingnum = $ratingNum")
+    }
+
+    companion object {
+        const val TAG = "LearnerRecordingList"
+        const val RATINGS_TEXT = "Ratings"
     }
 
 }
