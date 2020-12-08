@@ -52,7 +52,7 @@ class NativeLanguage : AppCompatActivity(), SearchView.OnQueryTextListener {
         mEnglishTranslationTV = findViewById(R.id.editTextTextPersonName)
         mOriginalWordTV = findViewById(R.id.editTextTextPersonName2)
         mListViewWords = findViewById(R.id.vocabList)
-        mAddBtn = findViewById(R.id.button)
+        mAddBtn = findViewById(R.id.nativeAddWordButton)
 
         setTitles()
 

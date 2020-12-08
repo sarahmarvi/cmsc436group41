@@ -53,7 +53,7 @@ class NativeWordActivity : AppCompatActivity() {
 
         mListViewRecordings = findViewById(R.id.native_record_rate_list)
 
-        mRecordBtn = findViewById(R.id.add_audio_button)
+        mRecordBtn = findViewById(R.id.addAudioButton)
 
         mRecordBtn.setOnClickListener {
 

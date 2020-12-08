@@ -36,7 +36,7 @@ class CreateAccountActivity : AppCompatActivity() {
         databaseUser = FirebaseDatabase.getInstance().getReference("User")
 
         emailTV = findViewById(R.id.editTextTextEmailAddress)
-        passwordTV = findViewById(R.id.editTextTextPassword)
+        passwordTV = findViewById(R.id.editTextTextPassword2)
         usernameTV = findViewById(R.id.editTextUsername)
         regBtn = findViewById(R.id.createAccBtn)
         regBtn!!.setOnClickListener { registerNewUser() }

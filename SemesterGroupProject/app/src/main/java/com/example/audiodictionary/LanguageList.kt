@@ -16,7 +16,7 @@ class LanguageList (private val context: Activity, private var languages: List<L
         val inflater = context.layoutInflater
         val listViewItem = inflater.inflate(R.layout.specified_language, null, true)
 
-        val textViewName = listViewItem.findViewById<View>(R.id.textView13) as TextView
+        val textViewName = listViewItem.findViewById<View>(R.id.textViewLanguagePlaceHolder) as TextView
 
         val language = languages[position]
         textViewName.text = language.nativeName + " - " + language.displayName

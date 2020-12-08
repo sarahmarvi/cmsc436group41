@@ -7,7 +7,7 @@
     android:background="#01435B">
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/loginTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_title"
@@ -32,12 +32,14 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.434" />
+        app:layout_constraintVertical_bias="0.434"
+        android:importantForAutofill="no" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/loginEmailTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:labelFor="@id/editTextTextEmailAddress2"
         android:text="@string/login_user"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#FFFFFF"
@@ -52,6 +54,7 @@
         android:id="@+id/passText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:labelFor="@id/editTextTextPassword"
         android:text="@string/login_pass"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#FFFFFF"
@@ -75,7 +78,8 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.284" />
+        app:layout_constraintVertical_bias="0.284"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/submitBtn"
@@ -92,7 +96,7 @@
         app:layout_constraintVertical_bias="0.541" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/loginQuestionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_question"
@@ -106,7 +110,7 @@
         app:layout_constraintVertical_bias="0.702" />
 
     <Button
-        android:id="@+id/createAccBtn"
+        android:id="@+id/createAccBtn2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#03A9F4"

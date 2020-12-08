@@ -7,7 +7,7 @@
     android:background="#01435B">
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/textViewRecordInstruction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/audio_mic_direct"
@@ -34,7 +34,7 @@
         app:layout_constraintVertical_bias="0.093" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/createAudioPlayButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#C57600"
@@ -49,7 +49,7 @@
         app:layout_constraintVertical_bias="0.802" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/addRecordingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#03A9F4"
@@ -64,7 +64,7 @@
         app:layout_constraintVertical_bias="0.916" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/textViewDeliveryTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/audio_explanation"
@@ -90,7 +90,7 @@
         app:layout_constraintVertical_bias="0.288" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/textViewSpeakInstruction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/audio_explanation2"
@@ -109,7 +109,7 @@
         android:layout_height="283dp"
         android:layout_marginTop="21dp"
         android:contentDescription="@string/audio_ring_explanation"
-        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintBottom_toTopOf="@+id/createAudioPlayButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/audio_language_placeholder"
@@ -122,7 +122,7 @@
         android:layout_height="227dp"
         android:layout_marginTop="49dp"
         android:contentDescription="@string/audio_mic_explanation"
-        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintBottom_toTopOf="@+id/createAudioPlayButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"

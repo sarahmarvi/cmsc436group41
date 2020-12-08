@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <View
-        android:id="@+id/view3"
+        android:id="@+id/viewWordBacking"
         android:layout_width="381dp"
         android:layout_height="81dp"
         android:background="#037BB1"

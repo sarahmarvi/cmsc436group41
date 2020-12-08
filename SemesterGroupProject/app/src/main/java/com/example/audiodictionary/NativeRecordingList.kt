@@ -31,8 +31,8 @@ class NativeRecordingList(
         val inflater = context.layoutInflater
         val listViewItem = inflater.inflate(R.layout.audio_list, null, true)
 
-        val textViewUserName = listViewItem.findViewById<View>(R.id.textView9) as TextView
-        val playBtn = listViewItem.findViewById<Button>(R.id.button2)
+        val textViewUserName = listViewItem.findViewById<View>(R.id.placeForNameTextView) as TextView
+        val playBtn = listViewItem.findViewById<Button>(R.id.audioListPlayButton)
         ratingBar = listViewItem.findViewById(R.id.ratingBar)
 
         val record = recordings[position]

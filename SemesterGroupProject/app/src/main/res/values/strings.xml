@@ -34,10 +34,12 @@
     <string name="create_user">Username</string>
     <string name="create_pass">Password</string>
     <string name="create_create">Create</string>
+    <string name="create_email_descr">email_input_descr</string>
 
 <!--    Strings for native_language-->
     <string name="native_language_eng">English</string>
     <string name="native_language_add_btn">Add</string>
+    <string name="native_language_content_descr">native_lang_descr</string>
 
 <!--    Strings for menu.xml -->
     <string name="menu_exit">Exit Session</string>

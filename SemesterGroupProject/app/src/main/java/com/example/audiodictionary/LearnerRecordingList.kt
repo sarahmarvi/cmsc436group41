@@ -11,9 +11,6 @@ import android.widget.Button
 import android.widget.RatingBar
 import android.widget.TextView
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 
 // Adapted from Lab7-Firebase to populate the list view in LearnerWordActivity
@@ -33,8 +30,8 @@ class LearnerRecordingList(
         val inflater = context.layoutInflater
         val listViewItem = inflater.inflate(R.layout.audio_list, null, true)
 
-        textViewUserName = listViewItem.findViewById<View>(R.id.textView9) as TextView
-        val playBtn = listViewItem.findViewById<Button>(R.id.button2)
+        textViewUserName = listViewItem.findViewById<View>(R.id.placeForNameTextView) as TextView
+        val playBtn = listViewItem.findViewById<Button>(R.id.audioListPlayButton)
         ratingBar = listViewItem.findViewById(R.id.ratingBar)
 
         val record = recordings[position]

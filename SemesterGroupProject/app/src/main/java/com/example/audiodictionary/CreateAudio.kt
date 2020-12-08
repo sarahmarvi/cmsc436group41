@@ -112,8 +112,8 @@ class CreateAudio : AppCompatActivity(), AudioManager.OnAudioFocusChangeListener
 
         // functionality detailed above
         startRecordingBtn = findViewById(R.id.imageView_mic)
-        playRecordingBtn = findViewById(R.id.button5)
-        submitBtn = findViewById(R.id.button4)
+        playRecordingBtn = findViewById(R.id.createAudioPlayButton)
+        submitBtn = findViewById(R.id.addRecordingButton)
         ringView = findViewById(R.id.imageView_ring)
 
         // to hide the blue ring image view when the activity is created

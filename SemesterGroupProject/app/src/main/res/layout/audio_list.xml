@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <View
-        android:id="@+id/view4"
+        android:id="@+id/audioComponentView"
         android:layout_width="383dp"
         android:layout_height="138dp"
         android:background="#037BB1"
@@ -58,7 +58,7 @@
         app:layout_constraintVertical_bias="0.018" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/placeForNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -71,7 +71,7 @@
         app:layout_constraintVertical_bias="0.115" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/audioListPlayButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#C57600"

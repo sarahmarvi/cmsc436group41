@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
         loginBtn = findViewById(R.id.submitBtn)
         loginBtn!!.setOnClickListener { loginUserAccount() }
 
-        createAccountButton = findViewById(R.id.createAccBtn)
+        createAccountButton = findViewById(R.id.createAccBtn2)
 
         createAccountButton.setOnClickListener {
             startCreateAcc()
