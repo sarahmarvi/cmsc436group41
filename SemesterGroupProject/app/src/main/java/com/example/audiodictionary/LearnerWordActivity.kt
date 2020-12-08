@@ -1,6 +1,5 @@
 package com.example.audiodictionary
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
@@ -44,7 +43,7 @@ class LearnerWordActivity : AppCompatActivity() {
         mDatabaseRecordings = FirebaseDatabase.getInstance().getReference("RecordingList")
 
         mTitle = findViewById(R.id.learner_word_title)
-        mTitle.text = wdOriginal + " - " + wdTranslation
+        mTitle.text = "$wdOriginal - $wdTranslation"
 
         mListViewRecordings = findViewById(R.id.learner_record_rate_list)
 

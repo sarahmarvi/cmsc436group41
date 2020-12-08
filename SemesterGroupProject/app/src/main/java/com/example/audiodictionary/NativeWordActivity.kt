@@ -49,7 +49,7 @@ class NativeWordActivity : AppCompatActivity() {
 
 
         mTitle = findViewById(R.id.native_word_title)
-        mTitle!!.text = wdOriginal + " - " + wdTranslation
+        mTitle!!.text = "$wdOriginal - $wdTranslation"
 
         mListViewRecordings = findViewById(R.id.native_record_rate_list)
 

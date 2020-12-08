@@ -11,9 +11,6 @@ import android.widget.Button
 import android.widget.RatingBar
 import android.widget.TextView
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 
 // Adapted from Lab7-Firebase to populate the list view in LearnerWordActivity

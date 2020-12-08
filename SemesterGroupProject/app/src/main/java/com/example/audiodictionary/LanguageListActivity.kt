@@ -34,7 +34,7 @@ class LanguageListActivity : AppCompatActivity() {
 
         mListViewLanguages = findViewById(R.id.language_list)
         mGreetingTextView = findViewById(R.id.languages_greeting)
-        mGreetingTextView.text = "Welcome, " + user
+        mGreetingTextView.text = "Welcome, $user"
 
         mDatabaseLanguage =  FirebaseDatabase.getInstance().getReference("Languages")
 
