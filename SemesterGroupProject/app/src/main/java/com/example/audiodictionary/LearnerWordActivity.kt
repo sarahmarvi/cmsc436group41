@@ -44,7 +44,7 @@ class LearnerWordActivity : AppCompatActivity() {
         mDatabaseRecordings = FirebaseDatabase.getInstance().getReference("RecordingList")
 
         mTitle = findViewById(R.id.learner_word_title)
-        mTitle.text = wdTranslation
+        mTitle.text = wdOriginal + " - " + wdTranslation
 
         mListViewRecordings = findViewById(R.id.learner_record_rate_list)
 
